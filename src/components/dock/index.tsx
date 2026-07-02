@@ -61,12 +61,12 @@ function computeIsActive(href: string | undefined, pathname: string): boolean {
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.065, delayChildren: 0.75 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 14, scale: 0.88 },
+  hidden: { opacity: 0, y: 10, scale: 0.85 },
   visible: {
     opacity: 1,
     y: 0,
@@ -76,12 +76,28 @@ const itemVariants = {
 };
 
 const popoverVariants = {
-  hidden: { opacity: 0, y: 8, scale: 0.92 },
+  hidden: { opacity: 0, scaleY: 0.2, scaleX: 0.8, y: 10 },
+  visible: {
+    opacity: 1,
+    scaleY: 1,
+    scaleX: 1,
+    y: 0,
+    transition: {
+      opacity: { duration: 0.1 },
+      scaleY: { type: "spring" as const, stiffness: 440, damping: 26 },
+      scaleX: { type: "spring" as const, stiffness: 440, damping: 26 },
+      staggerChildren: 0.045,
+      delayChildren: 0.07,
+    },
+  },
+};
+
+const popoverItemVariants = {
+  hidden: { opacity: 0, y: 6 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 420, damping: 28 },
+    transition: { type: "spring" as const, stiffness: 400, damping: 28 },
   },
 };
 
@@ -169,51 +185,42 @@ function DockItemButton({ item }: { item: DockNavItem }) {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="absolute bottom-full left-1/2 z-60 mb-3 -translate-x-1/2"
+            style={{ transformOrigin: "bottom center" }}
+            className="border-border/60 bg-background/80 absolute bottom-full left-1/2 z-60 mb-4 flex min-w-44 -translate-x-1/2 flex-col gap-0.5 rounded-2xl border p-2 shadow-xs backdrop-blur-xs"
           >
-            <div className="border-border bg-popover flex min-w-37.5 flex-col gap-0.5 rounded-2xl border p-1 shadow-lg">
-              {item.children?.map((child, i) => (
-                <motion.div
-                  key={child.href}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: { delay: i * 0.045, duration: 0.2, ease: "easeOut" as const },
-                  }}
-                >
-                  {isExternal(child.href) ? (
-                    <a
-                      href={child.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setIsPopoverOpen(false)}
-                      className="text-foreground/80 hover:bg-accent hover:text-accent-foreground flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition-colors"
-                    >
-                      {child.icon !== null && child.icon !== undefined && (
-                        <span className="flex size-5 shrink-0 items-center justify-center">
-                          {child.icon}
-                        </span>
-                      )}
-                      {child.label}
-                    </a>
-                  ) : (
-                    <Link
-                      href={child.href as Route}
-                      onClick={() => setIsPopoverOpen(false)}
-                      className="text-foreground/80 hover:bg-accent hover:text-accent-foreground flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition-colors"
-                    >
-                      {child.icon !== null && child.icon !== undefined && (
-                        <span className="flex size-5 shrink-0 items-center justify-center">
-                          {child.icon}
-                        </span>
-                      )}
-                      {child.label}
-                    </Link>
-                  )}
-                </motion.div>
-              ))}
-            </div>
+            {item.children?.map((child) => (
+              <motion.div key={child.href} variants={popoverItemVariants}>
+                {isExternal(child.href) ? (
+                  <a
+                    href={child.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsPopoverOpen(false)}
+                    className="text-foreground/80 hover:bg-accent hover:text-accent-foreground flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
+                  >
+                    {child.icon !== null && child.icon !== undefined && (
+                      <span className="flex size-5 shrink-0 items-center justify-center">
+                        {child.icon}
+                      </span>
+                    )}
+                    <span>{child.label}</span>
+                  </a>
+                ) : (
+                  <Link
+                    href={child.href as Route}
+                    onClick={() => setIsPopoverOpen(false)}
+                    className="text-foreground/80 hover:bg-accent hover:text-accent-foreground flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
+                  >
+                    {child.icon !== null && child.icon !== undefined && (
+                      <span className="flex size-5 shrink-0 items-center justify-center">
+                        {child.icon}
+                      </span>
+                    )}
+                    <span>{child.label}</span>
+                  </Link>
+                )}
+              </motion.div>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
@@ -267,7 +274,7 @@ function DockThemeButton({ duration = 400 }: { duration?: number }) {
 
   let themeLabel = "Theme";
   if (mounted) {
-    themeLabel = isDark ? "Light" : "Dark";
+    themeLabel = isDark ? "Lumos" : "Nox";
   }
 
   return (
@@ -281,7 +288,7 @@ function DockThemeButton({ duration = 400 }: { duration?: number }) {
         aria-label="Toggle theme"
         className="text-foreground/70 hover:bg-accent/50 hover:text-foreground focus-visible:ring-ring flex w-16 flex-col items-center gap-1 rounded-xl py-2 text-[10px] leading-none font-medium transition-colors outline-none focus-visible:ring-2"
       >
-        <span className="flex size-10 shrink-0 items-center justify-center">
+        <span className="flex size-8 shrink-0 items-center justify-center">
           {mounted && isDark ? <Sun size={24} /> : <Moon size={24} />}
         </span>
         <span className="w-full truncate text-center">{themeLabel}</span>
@@ -299,31 +306,45 @@ interface DockProps {
 
 export function Dock({ items, themeToggle = false }: DockProps) {
   return (
-    <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2">
+    <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 shadow-xs">
+      {/* Slide-in + expanding pill — border/bg here so they're always visible as it grows */}
       <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="border-border/60 bg-background/80 flex items-center gap-1 rounded-2xl border px-3 py-2 backdrop-blur-xl"
+        initial={{ opacity: 0, y: 28, width: "3.5rem" }}
+        animate={{ opacity: 1, y: 0, width: "auto" }}
+        transition={{
+          opacity: { duration: 0.25, ease: "easeOut" as const },
+          y: { type: "spring" as const, stiffness: 320, damping: 28 },
+          width: { delay: 0.4, duration: 0.5, ease: [0.25, 0, 0, 1] as const },
+        }}
+        className="border-border/60 bg-background/80 rounded-2xl border p-2 backdrop-blur-xs"
       >
-        {items.map((item, i) => {
-          if (isSeparator(item)) {
-            return (
-              <motion.div
-                key={`sep-${i}`}
-                variants={itemVariants}
-                className="bg-border mx-1 h-8 w-px shrink-0"
-              />
-            );
-          }
-          return <DockItemButton key={item.href ?? item.label} item={item} />;
-        })}
-        {themeToggle && (
-          <>
-            <motion.div variants={itemVariants} className="bg-border mx-1 h-8 w-px shrink-0" />
-            <DockThemeButton />
-          </>
-        )}
+        {/* Inner row — always at natural width; clipped by parent during expansion */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex items-center gap-1"
+          style={{ width: "max-content" }}
+        >
+          {items.map((item, i) => {
+            if (isSeparator(item)) {
+              return (
+                <motion.div
+                  key={`sep-${i}`}
+                  variants={itemVariants}
+                  className="bg-border mx-1 h-8 w-px shrink-0"
+                />
+              );
+            }
+            return <DockItemButton key={item.href ?? item.label} item={item} />;
+          })}
+          {themeToggle && (
+            <>
+              <motion.div variants={itemVariants} className="bg-border mx-1 h-8 w-px shrink-0" />
+              <DockThemeButton />
+            </>
+          )}
+        </motion.div>
       </motion.div>
     </div>
   );
