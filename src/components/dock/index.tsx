@@ -338,12 +338,7 @@ export function Dock({ items, themeToggle = false }: DockProps) {
             }
             return <DockItemButton key={item.href ?? item.label} item={item} />;
           })}
-          {themeToggle && (
-            <>
-              <motion.div variants={itemVariants} className="bg-border mx-1 h-8 w-px shrink-0" />
-              <DockThemeButton />
-            </>
-          )}
+          {themeToggle && <DockThemeButton />}
         </motion.div>
       </motion.div>
     </div>
