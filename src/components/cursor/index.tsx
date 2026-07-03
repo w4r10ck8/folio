@@ -1,13 +1,57 @@
 "use client";
 
-import { AnimatePresence, motion, useMotionValue } from "framer-motion";
+import { animate, type AnimationPlaybackControls } from "framer-motion";
+import { interpolate } from "flubber";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 
 import { useMounted } from "@/hooks/use-mounted";
-import { cn } from "@/lib/utils";
 
-// ── Types ─────────────────────────────────────────────────────────────────
+// ── Path builders ──────────────────────────────────────────────────────────
+
+/**
+ * Arrow cursor tip at (cx, cy), pointing top-left.
+ *
+ * Derived by taking the Pointer SVG path (viewBox 0 0 16 16), scaling to 24 × 24
+ * (×1.5), applying rotate(-70deg) around the element centre (12, 12), then
+ * translating so the visual tip lands at (cx, cy). Arc commands are treated as
+ * line segments — the arcs are r=0.5 in 16×16 space (0.75 px at 24×24), so the
+ * approximation is indistinguishable at screen resolution.
+ */
+function buildArrow(cx: number, cy: number): string {
+  return (
+    `M${cx},${cy} ` +
+    `L${cx + 15.9},${cy + 14.6} ` +
+    `L${cx + 15.4},${cy + 15.9} ` +
+    `L${cx + 7.6},${cy + 16.4} ` +
+    `L${cx + 2.3},${cy + 22} ` +
+    `L${cx + 1},${cy + 21.6} ` +
+    `L${cx - 0.4},${cy + 0.7} ` +
+    `Z`
+  );
+}
+
+/**
+ * Rounded-rectangle path in viewport coordinates.
+ * Uses quadratic bezier curves for corners to match CSS border-radius feel.
+ */
+function buildRoundedRect(x: number, y: number, w: number, h: number, brStr: string): string {
+  const r = Math.min(parseFloat(brStr) || 12, w / 2, h / 2);
+  return (
+    `M${x + r},${y} ` +
+    `L${x + w - r},${y} ` +
+    `Q${x + w},${y} ${x + w},${y + r} ` +
+    `L${x + w},${y + h - r} ` +
+    `Q${x + w},${y + h} ${x + w - r},${y + h} ` +
+    `L${x + r},${y + h} ` +
+    `Q${x},${y + h} ${x},${y + h - r} ` +
+    `L${x},${y + r} ` +
+    `Q${x},${y} ${x + r},${y} ` +
+    `Z`
+  );
+}
+
+// ── Types ──────────────────────────────────────────────────────────────────
 
 interface ExpandTarget {
   x: number;
@@ -17,32 +61,14 @@ interface ExpandTarget {
   borderRadius: string;
 }
 
-// ── Constants ─────────────────────────────────────────────────────────────
+// ── Constants ──────────────────────────────────────────────────────────────
 
 const INTERACTIVE = "a, button, [role='button'], [data-cursor-expand]";
-const EXPAND_PADDING = 1;
+const EXPAND_PADDING = 2;
 
-// ── Cursor arrow — mirrors the shape from ui/pointer ─────────────────────
-
-function CursorArrow({ isDark }: { isDark: boolean }) {
-  return (
-    <svg
-      stroke="currentColor"
-      fill="currentColor"
-      strokeWidth="1"
-      viewBox="0 0 16 16"
-      height="24"
-      width="24"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn(
-        "rotate-[-70deg]",
-        isDark ? "stroke-black text-white" : "stroke-white text-black",
-      )}
-    >
-      <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z" />
-    </svg>
-  );
-}
+// [fillOpacity, strokeOpacity, strokeWidth]
+const STYLE_ARROW: [number, number, number] = [1, 0, 0];
+const STYLE_EXPANDED: [number, number, number] = [0.07, 0.15, 1];
 
 // ── CustomCursor ───────────────────────────────────────────────────────────
 
@@ -51,21 +77,84 @@ export function CustomCursor() {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  // Instant motion values — no spring lag on the arrow itself
-  const cursorX = useMotionValue(-200);
-  const cursorY = useMotionValue(-200);
+  const pathRef = useRef<SVGPathElement>(null);
 
-  const [expandTarget, setExpandTarget] = useState<ExpandTarget | null>(null);
-  const [showArrow, setShowArrow] = useState(false);
+  // Keep latest isDark reachable inside the stable effect closure
+  const isDarkRef = useRef(isDark);
+  useEffect(() => {
+    isDarkRef.current = isDark;
+    const color = isDark ? "white" : "black";
+    pathRef.current?.setAttribute("fill", color);
+    pathRef.current?.setAttribute("stroke", color);
+  }, [isDark]);
 
-  // Refs avoid stale closures inside event handlers
+  // All cursor state lives in refs — avoid stale closures and skip React re-renders
+  // for high-frequency DOM updates (path d, fill-opacity, etc.)
+  const pos = useRef({ x: -200, y: -200 });
+  const currentD = useRef(buildArrow(-200, -200));
+  const isHovering = useRef(false);
+  const isMorphing = useRef(false);
   const currentEl = useRef<Element | null>(null);
-  const showArrowRef = useRef(false);
-  const initialized = useRef(false);
+  const animCtrl = useRef<AnimationPlaybackControls | null>(null);
+
+  const [visible, setVisible] = useState(false);
+  const visibleRef = useRef(false);
 
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
+    // ── Imperative path style ───────────────────────────────────────────
+    const setStyle = (fillOp: number, strokeOp: number, strokeW: number) => {
+      const p = pathRef.current;
+      if (!p) return;
+      p.setAttribute("fill-opacity", String(fillOp));
+      p.setAttribute("stroke-opacity", String(strokeOp));
+      p.setAttribute("stroke-width", String(strokeW));
+      // Drop shadow only in arrow mode — matches the original Pointer SVG feel
+      p.setAttribute("filter", fillOp > 0.5 ? "url(#cursor-shadow)" : "none");
+    };
+
+    // ── Core morph function ─────────────────────────────────────────────
+    // Cancels any running animation, creates a flubber interpolator from
+    // currentD → toD, then drives it with a spring via framer-motion animate().
+    const morphTo = (
+      toD: string,
+      fromStyle: [number, number, number],
+      toStyle: [number, number, number],
+      stiffness: number,
+      damping: number,
+      onDone?: () => void,
+    ) => {
+      animCtrl.current?.stop();
+      isMorphing.current = true;
+
+      const fromD = currentD.current;
+      const interp = interpolate(fromD, toD, { maxSegmentLength: 4 });
+
+      animCtrl.current = animate(0, 1, {
+        type: "spring",
+        stiffness,
+        damping,
+        mass: 0.7,
+        onUpdate(v) {
+          const t = Math.min(1, Math.max(0, v));
+          const d = interp(t);
+          currentD.current = d;
+          pathRef.current?.setAttribute("d", d);
+          setStyle(
+            fromStyle[0] + (toStyle[0] - fromStyle[0]) * t,
+            fromStyle[1] + (toStyle[1] - fromStyle[1]) * t,
+            fromStyle[2] + (toStyle[2] - fromStyle[2]) * t,
+          );
+        },
+        onComplete() {
+          isMorphing.current = false;
+          onDone?.();
+        },
+      });
+    };
+
+    // ── Target reading ──────────────────────────────────────────────────
     const readTarget = (el: Element): ExpandTarget => {
       const rect = el.getBoundingClientRect();
       return {
@@ -77,53 +166,122 @@ export function CustomCursor() {
       };
     };
 
-    const updateEl = (next: Element | null) => {
-      if (next === currentEl.current) return;
-      currentEl.current = next;
-      setExpandTarget(next ? readTarget(next) : null);
+    // ── Element enter / leave ───────────────────────────────────────────
+    const enterEl = (el: Element) => {
+      if (el === currentEl.current) return;
+      if (!visibleRef.current) return;
+      const wasHovering = isHovering.current; // capture BEFORE mutating
+      currentEl.current = el;
+      isHovering.current = true;
+      const { x, y, width, height, borderRadius } = readTarget(el);
+      morphTo(
+        buildRoundedRect(x, y, width, height, borderRadius),
+        wasHovering ? STYLE_EXPANDED : STYLE_ARROW,
+        STYLE_EXPANDED,
+        350,
+        30,
+      );
     };
 
+    const leaveEl = () => {
+      if (!isHovering.current) return;
+      isHovering.current = false;
+      currentEl.current = null;
+
+      // Fast tween (not spring) so collapse feels instant, not laggy.
+      // On complete, snap to actual current cursor position to eliminate drift.
+      animCtrl.current?.stop();
+      isMorphing.current = true;
+      const fromD = currentD.current;
+      const toD = buildArrow(pos.current.x, pos.current.y);
+      const interp = interpolate(fromD, toD, { maxSegmentLength: 4 });
+
+      animCtrl.current = animate(0, 1, {
+        duration: 0.12,
+        ease: [0.4, 0, 0.2, 1],
+        onUpdate(v) {
+          const t = Math.min(1, Math.max(0, v));
+          const d = interp(t);
+          currentD.current = d;
+          pathRef.current?.setAttribute("d", d);
+          setStyle(
+            STYLE_EXPANDED[0] + (STYLE_ARROW[0] - STYLE_EXPANDED[0]) * t,
+            STYLE_EXPANDED[1] + (STYLE_ARROW[1] - STYLE_EXPANDED[1]) * t,
+            STYLE_EXPANDED[2] + (STYLE_ARROW[2] - STYLE_EXPANDED[2]) * t,
+          );
+        },
+        onComplete() {
+          isMorphing.current = false;
+          // Snap to wherever the cursor actually is now
+          const d = buildArrow(pos.current.x, pos.current.y);
+          currentD.current = d;
+          pathRef.current?.setAttribute("d", d);
+          setStyle(...STYLE_ARROW);
+        },
+      });
+    };
+
+    // ── DOM event handlers ──────────────────────────────────────────────
     const onMove = (e: MouseEvent) => {
-      if (!initialized.current) {
-        initialized.current = true;
-        // Teleport on first move — avoids the arrow flying in from (-200, -200)
-        cursorX.jump(e.clientX);
-        cursorY.jump(e.clientY);
-      } else {
-        cursorX.set(e.clientX);
-        cursorY.set(e.clientY);
+      pos.current = { x: e.clientX, y: e.clientY };
+
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setVisible(true);
+        // Teleport to first position — no fly-in from (-200,-200)
+        const d = buildArrow(e.clientX, e.clientY);
+        currentD.current = d;
+        const color = isDarkRef.current ? "white" : "black";
+        const p = pathRef.current;
+        if (p) {
+          p.setAttribute("d", d);
+          p.setAttribute("fill", color);
+          p.setAttribute("stroke", color);
+          setStyle(...STYLE_ARROW);
+        }
       }
-      if (!showArrowRef.current) {
-        showArrowRef.current = true;
-        setShowArrow(true);
+
+      // Live arrow tracking — only when idle (not hovering or morphing)
+      if (!isHovering.current && !isMorphing.current) {
+        const d = buildArrow(e.clientX, e.clientY);
+        currentD.current = d;
+        pathRef.current?.setAttribute("d", d);
       }
     };
 
     const onOver = (e: MouseEvent) => {
-      const interactive = (e.target as Element)?.closest(INTERACTIVE) ?? null;
-      updateEl(interactive);
+      const el = (e.target as Element)?.closest(INTERACTIVE) ?? null;
+      if (el) enterEl(el);
     };
 
     const onOut = (e: MouseEvent) => {
       if (!currentEl.current) return;
       const rt = e.relatedTarget as Element | null;
-      // Still within the same interactive element (moving between its children)
       if (rt && currentEl.current.contains(rt)) return;
-      updateEl(rt?.closest(INTERACTIVE) ?? null);
+      const next = rt?.closest(INTERACTIVE) ?? null;
+      if (next)
+        enterEl(next); // slide to adjacent element
+      else leaveEl();
     };
 
     const onLeave = () => {
-      if (showArrowRef.current) {
-        showArrowRef.current = false;
-        setShowArrow(false);
-      }
-      initialized.current = false;
+      if (!visibleRef.current) return;
+      visibleRef.current = false;
+      setVisible(false);
+      animCtrl.current?.stop();
+      animCtrl.current = null;
+      isMorphing.current = false;
+      isHovering.current = false;
       currentEl.current = null;
-      setExpandTarget(null);
     };
 
     const onScroll = () => {
-      if (currentEl.current) setExpandTarget(readTarget(currentEl.current));
+      if (!isHovering.current || !currentEl.current) return;
+      const { x, y, width, height, borderRadius } = readTarget(currentEl.current);
+      // Instantly snap expanded rect to new scroll position
+      const d = buildRoundedRect(x, y, width, height, borderRadius);
+      currentD.current = d;
+      pathRef.current?.setAttribute("d", d);
     };
 
     document.addEventListener("mousemove", onMove);
@@ -138,68 +296,25 @@ export function CustomCursor() {
       document.removeEventListener("mouseout", onOut);
       document.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("scroll", onScroll);
+      animCtrl.current?.stop();
     };
-  }, [cursorX, cursorY]);
+  }, []); // Stable — all mutable state lives in refs
 
   if (!mounted) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-9999">
-      {/*
-       * Expand highlight — blooms from the cursor tip outward to cover the
-       * hovered element. Springs between elements so moving feels fluid.
-       */}
-      <AnimatePresence>
-        {expandTarget && (
-          <motion.div
-            key="expand"
-            initial={{
-              // Start as a small dot at the element's centre, then bloom outward
-              opacity: 0,
-              x: expandTarget.x + expandTarget.width / 2 - 6,
-              y: expandTarget.y + expandTarget.height / 2 - 6,
-              width: 12,
-              height: 12,
-              borderRadius: "50%",
-            }}
-            animate={{
-              opacity: 1,
-              x: expandTarget.x,
-              y: expandTarget.y,
-              width: expandTarget.width,
-              height: expandTarget.height,
-              borderRadius: expandTarget.borderRadius,
-            }}
-            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.12 } }}
-            transition={{
-              opacity: { duration: 0.1 },
-              x: { type: "spring", stiffness: 500, damping: 35, mass: 0.6 },
-              y: { type: "spring", stiffness: 500, damping: 35, mass: 0.6 },
-              width: { type: "spring", stiffness: 380, damping: 32, mass: 0.6 },
-              height: { type: "spring", stiffness: 380, damping: 32, mass: 0.6 },
-              borderRadius: { duration: 0.18 },
-            }}
-            className="border-foreground/20 bg-foreground/10 absolute border"
-          />
-        )}
-      </AnimatePresence>
-
-      {/*
-       * Arrow cursor — instant tracking so it feels exactly like a native cursor.
-       * Fades out the moment expand activates; fades back in on leaving.
-       */}
-      <motion.div
-        style={{ x: cursorX, y: cursorY }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showArrow && !expandTarget ? 1 : 0 }}
-        transition={{ opacity: { duration: 0.12 } }}
-        className="absolute top-0 left-0 will-change-transform"
-      >
-        {/* Offset by -12px to center the 24×24 SVG on the cursor hot-point */}
-        <div style={{ transform: "translate(-12px, -12px)" }}>
-          <CursorArrow isDark={isDark} />
-        </div>
-      </motion.div>
-    </div>
+    // Single SVG overlay — one <path> that morphs between arrow and rounded rect.
+    // No React state drives the path; all updates are imperative via pathRef.
+    <svg
+      className="pointer-events-none fixed inset-0 z-[9999] h-screen w-screen"
+      style={{ opacity: visible ? 1 : 0, transition: "opacity 0.15s ease" }}
+    >
+      <defs>
+        <filter id="cursor-shadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodOpacity={isDark ? 0.6 : 0.35} />
+        </filter>
+      </defs>
+      <path ref={pathRef} strokeLinejoin="round" strokeLinecap="round" />
+    </svg>
   );
 }

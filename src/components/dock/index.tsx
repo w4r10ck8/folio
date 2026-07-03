@@ -6,8 +6,8 @@ import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { flushSync } from "react-dom";
+import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
+import { createPortal, flushSync } from "react-dom";
 
 import { useMounted } from "@/hooks/use-mounted";
 import { cn } from "@/lib/utils";
@@ -58,7 +58,8 @@ function computeIsActive(href: string | undefined, pathname: string): boolean {
 
 // ── Shared styles ───────────────────────────────────────────────────────────
 
-const dockSurfaceCn = "border-border bg-background/40 rounded-2xl border p-2 backdrop-blur-sm";
+const dockSurfaceCn =
+  "border-border bg-background/40 rounded-2xl border p-2 shadow-xs backdrop-blur-sm";
 
 // ── Animation variants ─────────────────────────────────────────────────────
 
@@ -105,11 +106,82 @@ const popoverItemVariants = {
   },
 };
 
+// ── DockPopover (internal) ────────────────────────────────────────────────
+
+interface DockPopoverProps {
+  isOpen: boolean;
+  anchorRef: RefObject<HTMLDivElement | null>;
+  popoverRef: RefObject<HTMLDivElement | null>;
+  children: ReactNode;
+}
+
+// Rendered via portal so it sits outside the dock's backdrop-filter stacking
+// context — this is what allows backdrop-blur-sm to work on both surfaces.
+function DockPopover({ isOpen, anchorRef, popoverRef, children }: DockPopoverProps) {
+  const mounted = useMounted();
+  const [pos, setPos] = useState<{ bottom: number; left: number } | null>(null);
+
+  useEffect(() => {
+    if (!isOpen || !anchorRef.current) {
+      setPos(null);
+      return;
+    }
+
+    const update = () => {
+      if (!anchorRef.current) return;
+      const rect = anchorRef.current.getBoundingClientRect();
+      setPos({ bottom: window.innerHeight - rect.top + 16, left: rect.left + rect.width / 2 });
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [isOpen, anchorRef]);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div
+      style={{
+        position: "fixed",
+        bottom: pos?.bottom ?? 0,
+        left: pos?.left ?? 0,
+        transform: "translateX(-50%)",
+        zIndex: 60,
+        pointerEvents: isOpen ? "auto" : "none",
+      }}
+    >
+      <AnimatePresence>
+        {isOpen && pos !== null && (
+          <motion.div
+            ref={popoverRef}
+            key="popover"
+            variants={popoverVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            style={{ transformOrigin: "bottom center" }}
+            className={cn(dockSurfaceCn, "flex min-w-44 flex-col gap-0.5")}
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>,
+    document.body,
+  );
+}
+
 // ── DockItemButton (internal) ──────────────────────────────────────────────
 
 function DockItemButton({ item }: { item: DockNavItem }) {
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const hasChildren = Boolean(item.children?.length);
@@ -120,7 +192,8 @@ function DockItemButton({ item }: { item: DockNavItem }) {
     if (!isPopoverOpen) return;
 
     const handleOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (!containerRef.current?.contains(target) && !popoverRef.current?.contains(target)) {
         setIsPopoverOpen(false);
       }
     };
@@ -179,62 +252,50 @@ function DockItemButton({ item }: { item: DockNavItem }) {
   }
 
   return (
-    <motion.div ref={containerRef} variants={itemVariants} className="relative">
-      {/* Children popover — fan card above the dock item */}
-      <AnimatePresence>
-        {isPopoverOpen && hasChildren && (
-          <motion.div
-            key="popover"
-            variants={popoverVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            style={{ transformOrigin: "bottom center" }}
-            className={cn(
-              dockSurfaceCn,
-              "absolute bottom-full left-1/2 z-60 mb-4 flex min-w-44 -translate-x-1/2 flex-col gap-0.5 shadow-xs",
-            )}
-          >
-            {item.children?.map((child) => (
-              <motion.div key={child.href} variants={popoverItemVariants}>
-                {isExternal(child.href) ? (
-                  <a
-                    href={child.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setIsPopoverOpen(false)}
-                    className="text-foreground/70 flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
-                  >
-                    {child.icon !== null && child.icon !== undefined && (
-                      <span className="flex size-5 shrink-0 items-center justify-center">
-                        {child.icon}
-                      </span>
-                    )}
-                    <span>{child.label}</span>
-                  </a>
-                ) : (
-                  <Link
-                    href={child.href as Route}
-                    onClick={() => setIsPopoverOpen(false)}
-                    className="text-foreground/70 flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
-                  >
-                    {child.icon !== null && child.icon !== undefined && (
-                      <span className="flex size-5 shrink-0 items-center justify-center">
-                        {child.icon}
-                      </span>
-                    )}
-                    <span>{child.label}</span>
-                  </Link>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <>
+      <motion.div ref={containerRef} variants={itemVariants} className="relative">
+        {dockElement}
+      </motion.div>
 
-      {/* Dock item — button for children items, Link for nav items */}
-      {dockElement}
-    </motion.div>
+      {/* Popover portalled to document.body — escapes the dock's backdrop-filter stacking context */}
+      {hasChildren && (
+        <DockPopover isOpen={isPopoverOpen} anchorRef={containerRef} popoverRef={popoverRef}>
+          {item.children?.map((child) => (
+            <motion.div key={child.href} variants={popoverItemVariants}>
+              {isExternal(child.href) ? (
+                <a
+                  href={child.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsPopoverOpen(false)}
+                  className="text-foreground/70 flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
+                >
+                  {child.icon !== null && child.icon !== undefined && (
+                    <span className="flex size-5 shrink-0 items-center justify-center">
+                      {child.icon}
+                    </span>
+                  )}
+                  <span>{child.label}</span>
+                </a>
+              ) : (
+                <Link
+                  href={child.href as Route}
+                  onClick={() => setIsPopoverOpen(false)}
+                  className="text-foreground/70 flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
+                >
+                  {child.icon !== null && child.icon !== undefined && (
+                    <span className="flex size-5 shrink-0 items-center justify-center">
+                      {child.icon}
+                    </span>
+                  )}
+                  <span>{child.label}</span>
+                </Link>
+              )}
+            </motion.div>
+          ))}
+        </DockPopover>
+      )}
+    </>
   );
 }
 
@@ -313,7 +374,7 @@ interface DockProps {
 
 export function Dock({ items, themeToggle = false }: DockProps) {
   return (
-    <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 shadow-xs">
+    <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2">
       {/* Slide-in + expanding pill — border/bg here so they're always visible as it grows */}
       <motion.div
         initial={{ opacity: 0, y: 28, width: "3.5rem" }}
