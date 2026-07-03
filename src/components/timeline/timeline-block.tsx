@@ -14,7 +14,7 @@ const blockStyles = {
   // ─ left column, company identity (date · name · role) ─────────────────
   "left-company-name": {
     colClass: "hidden w-[35%] md:flex md:justify-end pr-10",
-    motionClass: "w-full max-w-sm",
+    motionClass: "w-full",
     slideX: -40,
     wrapper: "flex flex-col items-end text-right",
     badge:
@@ -26,7 +26,7 @@ const blockStyles = {
   // ─ left column, highlights card ───────────────────────────────────────
   "left-company-details": {
     colClass: "hidden w-[65%] md:flex md:justify-end pr-10",
-    motionClass: "w-full max-w-sm",
+    motionClass: "w-full",
     slideX: -40,
     wrapper: "",
     badge: "",
