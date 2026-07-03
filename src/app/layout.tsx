@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-import { CircleUser, Earth, FolderOpen, Github, House, Linkedin, Mail } from "lucide-react";
+import { BriefcaseBusiness, CircleUser, Earth, Github, House, Linkedin, Mail } from "lucide-react";
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, JetBrains_Mono, Manrope } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -13,7 +13,7 @@ import "./globals.css";
 
 const DOCK_ITEMS: Array<DockItem> = [
   { label: "Home", href: ROUTE_MANAGER.home, icon: <House size={24} /> },
-  { label: "Projects", href: ROUTE_MANAGER.projects, icon: <FolderOpen size={20} /> },
+  { label: "Projects", href: ROUTE_MANAGER.projects, icon: <BriefcaseBusiness size={24} /> },
   { label: "About", href: ROUTE_MANAGER.about, icon: <CircleUser size={24} /> },
   { type: "separator" },
   {

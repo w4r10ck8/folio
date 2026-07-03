@@ -2,3 +2,7 @@
 node_modules
 public
 archive
+.agents
+.claude
+STATE
+.github/instructions
