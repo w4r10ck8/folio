@@ -5,6 +5,7 @@ import { Bricolage_Grotesque, JetBrains_Mono, Manrope } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 
+import { CustomCursor } from "@/components/cursor";
 import { Dock, type DockItem } from "@/components/dock";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps): ReactNode {
         >
           {children}
           <Dock items={DOCK_ITEMS} themeToggle />
+          <CustomCursor />
         </ThemeProvider>
       </body>
     </html>
