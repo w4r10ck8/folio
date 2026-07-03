@@ -135,7 +135,7 @@ function DockItemButton({ item }: { item: DockNavItem }) {
   const buttonClassName = cn(
     "flex w-16 flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-medium leading-none outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
     isActive
-      ? "bg-accent text-accent-foreground"
+      ? "bg-accent/60 border border-primary/25 text-accent-foreground"
       : "text-foreground/70 hover:bg-accent/50 hover:text-foreground",
   );
 
@@ -186,7 +186,7 @@ function DockItemButton({ item }: { item: DockNavItem }) {
             animate="visible"
             exit="hidden"
             style={{ transformOrigin: "bottom center" }}
-            className="border-border/60 bg-background/80 absolute bottom-full left-1/2 z-60 mb-4 flex min-w-44 -translate-x-1/2 flex-col gap-0.5 rounded-2xl border p-2 shadow-xs backdrop-blur-xs"
+            className="border-border bg-background/40 absolute bottom-full left-1/2 z-60 mb-4 flex min-w-44 -translate-x-1/2 flex-col gap-0.5 rounded-2xl border p-2 shadow-xs backdrop-blur-sm"
           >
             {item.children?.map((child) => (
               <motion.div key={child.href} variants={popoverItemVariants}>
@@ -196,7 +196,7 @@ function DockItemButton({ item }: { item: DockNavItem }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setIsPopoverOpen(false)}
-                    className="text-foreground/80 hover:bg-accent hover:text-accent-foreground flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
+                    className="text-foreground/70 hover:bg-accent/50 hover:text-foreground flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
                   >
                     {child.icon !== null && child.icon !== undefined && (
                       <span className="flex size-5 shrink-0 items-center justify-center">
@@ -209,7 +209,7 @@ function DockItemButton({ item }: { item: DockNavItem }) {
                   <Link
                     href={child.href as Route}
                     onClick={() => setIsPopoverOpen(false)}
-                    className="text-foreground/80 hover:bg-accent hover:text-accent-foreground flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
+                    className="text-foreground/70 hover:bg-accent/50 hover:text-foreground flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors"
                   >
                     {child.icon !== null && child.icon !== undefined && (
                       <span className="flex size-5 shrink-0 items-center justify-center">
@@ -316,7 +316,7 @@ export function Dock({ items, themeToggle = false }: DockProps) {
           y: { type: "spring" as const, stiffness: 320, damping: 28 },
           width: { delay: 0.4, duration: 0.5, ease: [0.25, 0, 0, 1] as const },
         }}
-        className="border-border/60 bg-background/80 rounded-2xl border p-2 backdrop-blur-xs"
+        className="border-border bg-background/40 rounded-2xl border p-2 backdrop-blur-sm"
       >
         {/* Inner row — always at natural width; clipped by parent during expansion */}
         <motion.div

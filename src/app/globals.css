@@ -41,6 +41,7 @@
   --radius: 0.5rem;
 
   --dot-color: oklch(0.92 0 0);
+  --matrix-green: oklch(50.802% 0.17285 142.511);
 
   --shadow-2xs: 0 1px 3px 0px oklch(0 0 0 / 0.05);
   --shadow-xs: 0 1px 3px 0px oklch(0 0 0 / 0.05);
@@ -87,6 +88,7 @@
   --chart-5: oklch(0.54 0.18 265);
 
   --dot-color: oklch(0.25 0 0);
+  --matrix-green: oklch(0.78 0.28 145);
 
   --shadow-2xs: 0 1px 3px 0px oklch(0 0 0 / 0.05);
   --shadow-xs: 0 1px 3px 0px oklch(0 0 0 / 0.05);
@@ -131,6 +133,7 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-matrix-green: var(--matrix-green);
 
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
