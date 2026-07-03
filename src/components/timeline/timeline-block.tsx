@@ -13,7 +13,7 @@ export type TimelineVariant =
 const blockStyles = {
   // ─ left column, company identity (date · name · role) ─────────────────
   "left-company-name": {
-    colClass: "hidden w-[40%] md:flex md:justify-end pr-5",
+    colClass: "hidden w-[35%] md:flex md:justify-end pr-10",
     motionClass: "w-full max-w-sm",
     slideX: -40,
     wrapper: "flex flex-col items-end text-right",
@@ -25,7 +25,7 @@ const blockStyles = {
   },
   // ─ left column, highlights card ───────────────────────────────────────
   "left-company-details": {
-    colClass: "hidden w-[60%] md:flex md:justify-end pr-15",
+    colClass: "hidden w-[65%] md:flex md:justify-end pr-10",
     motionClass: "w-full max-w-sm",
     slideX: -40,
     wrapper: "",
@@ -36,7 +36,7 @@ const blockStyles = {
   },
   // ─ right column, company identity ─────────────────────────────────────
   "right-company-name": {
-    colClass: "hidden md:flex md:w-[40%] pl-5",
+    colClass: "hidden md:flex md:w-[35%] pl-10",
     motionClass: "w-full",
     slideX: 40,
     wrapper: "flex flex-col items-start text-left",
@@ -48,7 +48,7 @@ const blockStyles = {
   },
   // ─ right column, highlights card ──────────────────────────────────────
   "right-company-details": {
-    colClass: "hidden md:flex md:w-[60%] pl-15",
+    colClass: "hidden md:flex md:w-[65%] pl-10",
     motionClass: "w-full",
     slideX: 40,
     wrapper: "",
