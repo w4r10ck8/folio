@@ -85,7 +85,7 @@ export function Timeline() {
             className="font-heading text-foreground font-bold"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
           >
-            Experience
+            Journey so far
           </h2>
         </motion.div>
 
