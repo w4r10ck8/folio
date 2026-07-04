@@ -81,53 +81,56 @@ export function HeroBanner() {
           </div>
         </div>
 
-        {/* Muggle + BORN - holds at the bottom, then slides back down the way it entered */}
-        <motion.div
-          className="pointer-events-none absolute bottom-0 flex items-end select-none"
-          style={{ left: "50%", x: "-50%", y: exitY }}
-        >
+        {/* Muggle + BORN - fixed+clipped to the viewport so the exit slide never
+            inflates document scroll height, then slides down the way it entered */}
+        <div className="pointer-events-none fixed inset-0 overflow-hidden select-none" aria-hidden>
           <motion.div
-            className="flex items-end"
-            initial={{ y: "100%" }}
-            animate={{ y: "15%" }}
-            transition={{ duration: 2, ease: [0.16, 1, 0.2, 1], delay: 1 }}
+            className="absolute bottom-0 flex items-end"
+            style={{ left: "50%", x: "-50%", y: exitY }}
           >
-            <span
-              className="font-heading text-foreground/30 leading-none font-bold"
-              style={{ fontSize: "clamp(6rem, 22vw, 26rem)" }}
+            <motion.div
+              className="flex items-end"
+              initial={{ y: "100%" }}
+              animate={{ y: "15%" }}
+              transition={{ duration: 2, ease: [0.16, 1, 0.2, 1], delay: 1 }}
             >
-              Muggle
-            </span>
-            {/* BORN stacked vertically, height matches Muggle */}
-            <div
-              className="font-heading flex flex-col leading-none font-bold"
-              style={{
-                fontSize: "clamp(1.5rem, 4.5vw, 6.5rem)",
-                marginBottom: "clamp(1rem, 3vw, 3rem)",
-              }}
-            >
-              {(["B", "O", "R", "N"] as const).map((letter, i) => (
-                <motion.span
-                  key={letter}
-                  style={{
-                    WebkitTextStroke: "2px var(--color-primary)",
-                    color: "transparent",
-                    display: "block",
-                  }}
-                  initial={{ y: 40, opacity: 0 }}
-                  animate={{ y: 0, opacity: 0.4 }}
-                  transition={{
-                    duration: 1.0,
-                    delay: 1.5 + i * 0.15,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </div>
+              <span
+                className="font-heading text-foreground/30 leading-none font-bold"
+                style={{ fontSize: "clamp(6rem, 22vw, 26rem)" }}
+              >
+                Muggle
+              </span>
+              {/* BORN stacked vertically, height matches Muggle */}
+              <div
+                className="font-heading flex flex-col leading-none font-bold"
+                style={{
+                  fontSize: "clamp(1.5rem, 4.5vw, 6.5rem)",
+                  marginBottom: "clamp(1rem, 3vw, 3rem)",
+                }}
+              >
+                {(["B", "O", "R", "N"] as const).map((letter, i) => (
+                  <motion.span
+                    key={letter}
+                    style={{
+                      WebkitTextStroke: "2px var(--color-primary)",
+                      color: "transparent",
+                      display: "block",
+                    }}
+                    initial={{ y: 40, opacity: 0 }}
+                    animate={{ y: 0, opacity: 0.4 }}
+                    transition={{
+                      duration: 1.0,
+                      delay: 1.5 + i * 0.15,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
     </>
   );

@@ -51,4 +51,16 @@ export const JOBS: Array<Job> = [
       "Implemented core business logic using an OOP-based PHP approach.",
     ],
   },
+  {
+    company: "Swinburne University",
+    role: "Master of Information Technology",
+    duration: "2017 – 2019",
+    highlights: [],
+  },
+  {
+    company: "CHARUSAT University",
+    role: "Bachelor of Information Technology",
+    duration: "2012 – 2016",
+    highlights: [],
+  },
 ];

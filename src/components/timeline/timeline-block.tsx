@@ -79,6 +79,10 @@ interface TimelineBlockProps {
 export function TimelineBlock({ job, variant }: TimelineBlockProps) {
   const s = blockStyles[variant];
 
+  const isDetailsVariant =
+    variant === "left-company-details" || variant === "right-company-details";
+  const hasDetails = !isDetailsVariant || job.highlights.length > 0;
+
   const content =
     variant === "left-company-name" || variant === "right-company-name" ? (
       <div className={s.wrapper}>
@@ -86,7 +90,7 @@ export function TimelineBlock({ job, variant }: TimelineBlockProps) {
         <h3 className={s.heading}>{job.company}</h3>
         <p className={s.role}>{job.role}</p>
       </div>
-    ) : (
+    ) : hasDetails ? (
       <div className={s.card}>
         <ul className="space-y-2.5">
           {job.highlights.map((highlight, i) => (
@@ -100,9 +104,11 @@ export function TimelineBlock({ job, variant }: TimelineBlockProps) {
           ))}
         </ul>
       </div>
-    );
+    ) : null;
 
   return (
+    // Column wrapper stays in flow even with no card, so the row keeps its
+    // 35/65 split and the sibling name block doesn't collapse to flex-start.
     <div className={s.colClass}>
       <motion.div
         className={s.motionClass}
