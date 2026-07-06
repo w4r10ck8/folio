@@ -39,12 +39,12 @@ export function HeroBanner() {
     <>
       <section className="relative flex h-screen items-center justify-center">
         {/* Left-aligned content within centered padded container */}
-        <div className="relative z-10 flex w-full max-w-5xl flex-col items-start gap-3 px-6">
+        <div className="f relative z-10 container flex-col items-start gap-3 px-6">
           {/* whoami with block cursor */}
           <div className="flex items-center gap-1.5" style={{ color: "var(--matrix-green)" }}>
             <span className="font-mono text-base md:text-lg">$</span>
             <TypingAnimation
-              className="font-mono text-base tracking-widest md:text-lg"
+              className="md:text-x md:text-x track font-mono text-base"
               cursorStyle="block"
               showCursor
               blinkCursor
@@ -59,7 +59,7 @@ export function HeroBanner() {
           {/* Jay Pancholi */}
           <h1
             className="font-heading leading-none font-bold"
-            style={{ fontSize: "clamp(3rem, 8vw, 8rem)" }}
+            style={{ fontSize: "clamp(3rem, 14vw, 14rem)" }}
           >
             <span className="text-foreground block">Jay</span>
             <span className="text-primary block">Pancholi</span>
