@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { motion, useScroll } from "motion/react";
 
 import { JOBS } from "@/lib/constants/jobs";
-import { CORNER_R, DOT_OFFSET } from "./constants";
+import { CORNER_R, DOT_SEAM_RATIO } from "./constants";
 import { TimelineEvent } from "./timeline-event";
 
 export function Timeline() {
@@ -23,9 +23,11 @@ export function Timeline() {
       if (!containerRef.current) return;
       const cr = containerRef.current.getBoundingClientRect();
       const half = Math.round(cr.width / 2);
+      const dotOffset = Math.round(cr.width * DOT_SEAM_RATIO);
+      containerRef.current.style.setProperty("--dot-offset", `${dotOffset}px`);
 
       // X from geometry (even = right-card dot left of centre, odd = right of centre)
-      const dotX = (i: number) => half + (i % 2 === 0 ? -DOT_OFFSET : DOT_OFFSET);
+      const dotX = (i: number) => half + (i % 2 === 0 ? -dotOffset : dotOffset);
 
       // Y from DOM measurement
       const ys = dotRefs.current.filter(Boolean).map((ref) => {
@@ -69,7 +71,7 @@ export function Timeline() {
 
   return (
     <section className="py-24">
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="container mx-auto px-6">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

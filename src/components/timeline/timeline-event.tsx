@@ -1,7 +1,7 @@
 "use client";
 
 import { type Job } from "@/lib/constants/jobs";
-import { DOT_OFFSET, HALF_DOT } from "./constants";
+import { HALF_DOT } from "./constants";
 import { MobileCardAnimated } from "./mobile-card";
 import { TimelineBlock } from "./timeline-block";
 import { TimelineDot } from "./timeline-dot";
@@ -27,8 +27,8 @@ export function TimelineEvent({ job, isRight, dotRef, rowRef }: TimelineEventPro
         style={{
           top: "22px",
           left: isRight
-            ? `calc(50% - ${DOT_OFFSET + HALF_DOT}px)`
-            : `calc(50% + ${DOT_OFFSET - HALF_DOT}px)`,
+            ? `calc(50% - (var(--dot-offset, 150px) + ${HALF_DOT}px))`
+            : `calc(50% + (var(--dot-offset, 150px) - ${HALF_DOT}px))`,
         }}
       >
         <TimelineDot dotRef={dotRef} />
