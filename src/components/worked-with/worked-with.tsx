@@ -63,7 +63,7 @@ export function WorkedWith() {
                     width={160}
                     height={60}
                     style={{ width: "auto", height: "48px" }}
-                    className="object-contain [filter:brightness(0)_invert(1)]"
+                    className="object-contain filter-[brightness(0)_invert(1)]"
                   />
                 )}
               </motion.a>
@@ -79,7 +79,7 @@ export function WorkedWith() {
             showMobileWarning={false}
             showTooltip={false}
           >
-            <div className="border-primary-foreboound/20 grrder-primary-foreground/20 ls-2 g6 grid w-full bg-white/10 p-8 backdrop-blur-sm md:grid-cols-4">
+            <div className="border-primary-foreboound/20 grrder-primary-foreground/20 ls-2 g6 grid w-full rounded-2xl bg-white/10 p-8 backdrop-blur-sm md:grid-cols-4">
               {STATS.map((stat, i) => (
                 <motion.div
                   key={stat.label}
