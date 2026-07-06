@@ -63,7 +63,7 @@ interface ExpandTarget {
 
 // ── Constants ──────────────────────────────────────────────────────────────
 
-const INTERACTIVE = "a, button, [role='button'], [data-cursor-expand]";
+const INTERACTIVE = "a, button, [role='button'], [data-cursor-expand], input, textarea, select";
 const EXPAND_PADDING = 2;
 
 // [fillOpacity, strokeOpacity, strokeWidth]

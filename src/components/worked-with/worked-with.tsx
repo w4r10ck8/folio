@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 import { NumberTicker } from "@/components/ui/number-ticker";
+import { TiltedCard } from "@/components/ui/tilted-card";
 import { COMPANIES, STATS } from "./constants";
 
 export function WorkedWith() {
@@ -69,40 +70,47 @@ export function WorkedWith() {
             ))}
           </div>
 
-          {/* Divider */}
-          <div className="bg-primary-foreground/20 mb-12 h-px" />
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {STATS.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.3 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <div
-                  className="text-primary-foreground font-heading font-bold tabular-nums"
-                  style={{ fontSize: "clamp(1.75rem, 3vw, 2.5rem)" }}
+          {/* Stats — single tilted card */}
+          <TiltedCard
+            containerHeight="auto"
+            containerWidth="100%"
+            scaleOnHover={1.02}
+            rotateAmplitude={6}
+            showMobileWarning={false}
+            showTooltip={false}
+          >
+            <div className="border-primary-foreboound/20 grrder-primary-foreground/20 ls-2 g6 grid w-full bg-white/10 p-8 backdrop-blur-sm md:grid-cols-4">
+              {STATS.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.3 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex flex-col gap-1"
                 >
-                  {stat.value !== null ? (
-                    <>
-                      <NumberTicker
-                        value={stat.value}
-                        delay={0.3 + i * 0.08}
-                        className="text-primary-foreground font-heading font-bold"
-                      />
-                      {stat.suffix}
-                    </>
-                  ) : (
-                    <span style={{ fontSize: "clamp(2.25rem, 4vw, 3.25rem)" }}>{stat.suffix}</span>
-                  )}
-                </div>
-                <div className="text-primary-foreground/60 mt-1 text-sm">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
+                  <div
+                    className="text-primary-foreground font-heading leading-none font-bold"
+                    style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}
+                  >
+                    {stat.value !== null ? (
+                      <>
+                        <NumberTicker
+                          value={stat.value}
+                          delay={0.3 + i * 0.08}
+                          className="text-primary-foreground font-heading leading-none font-bold"
+                        />
+                        {stat.suffix}
+                      </>
+                    ) : (
+                      stat.suffix
+                    )}
+                  </div>
+                  <div className="text-primary-foreground/60 text-sm">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </TiltedCard>
         </motion.div>
       </div>
     </section>
