@@ -20,3 +20,7 @@ export const MAX_RETRY_COUNT = 3;
 
 // ── Discord (contact form notifications) ─────────────────────────────────
 export const DISCORD_EMBED_COLOR = 0x8b5cf6; // accent used for the contact form embed
+
+// ── Current employer ─────────────────────────────────────────────────────
+export const CURRENT_EMPLOYER = "Exco Partners | NEC";
+export const CURRENT_EMPLOYER_URL = "https://excopartners.com.au";

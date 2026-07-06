@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
+import { ArrowUpRight } from "lucide-react";
+
+import { CURRENT_EMPLOYER, CURRENT_EMPLOYER_URL } from "@/lib/constants";
 import { HyperText } from "@/components/ui/hyper-text";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 
@@ -59,25 +62,41 @@ export function HeroBanner() {
           {/* Jay Pancholi */}
           <h1
             className="font-heading leading-none font-bold"
-            style={{ fontSize: "clamp(3rem, 14vw, 14rem)" }}
+            style={{ fontSize: "clamp(3rem, 10vw, 10rem)" }}
           >
             <span className="text-foreground block">Jay</span>
             <span className="text-primary block">Pancholi</span>
           </h1>
 
           {/* I'm a <role> */}
-          <div className="text-muted-foreground flex flex-col items-start gap-0.5 md:flex-row md:items-center md:gap-2">
-            <span className="text-base md:text-lg">I&apos;m a</span>
-            <HyperText
-              key={currentRole}
-              as="span"
-              className="text-primary fon text-base"
-              startOnView={false}
-              animateOnHover={false}
-              duration={600}
+          <div className="flex items-center gap-6">
+            <a
+              href={CURRENT_EMPLOYER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group border-border bg-card hover:border-primary/50 relative mt-2 inline-flex flex-col gap-0.5 rounded border px-3 py-2 backdrop-blur-xs"
             >
-              {currentRole}
-            </HyperText>
+              <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+                Current Session
+              </span>
+              <span className="text-primary font-mono text-sm font-bold">
+                @ {CURRENT_EMPLOYER.toUpperCase()}
+              </span>
+              <ArrowUpRight className="text-primary absolute top-2 right-2 size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+            <div className="text-muted-foreground gap flex flex-row items-center gap-1">
+              <span className="text-base md:text-lg">$</span>
+              <HyperText
+                key={currentRole}
+                as="span"
+                className="text-primary font-mono text-base"
+                startOnView={false}
+                animateOnHover={false}
+                duration={600}
+              >
+                {currentRole}
+              </HyperText>
+            </div>
           </div>
         </div>
 
@@ -95,7 +114,7 @@ export function HeroBanner() {
               transition={{ duration: 2, ease: [0.16, 1, 0.2, 1], delay: 1 }}
             >
               <span
-                className="font-heading text-foreground/30 leading-none font-bold"
+                className="font-heading text-foreground/10 leading-none font-bold"
                 style={{ fontSize: "clamp(6rem, 22vw, 26rem)" }}
               >
                 Muggle

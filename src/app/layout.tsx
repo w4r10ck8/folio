@@ -71,7 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps): ReactNode {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="bg-background pointep-ovents-none reinter-events-none box-shadow:0_40px_80px_-20px_color-mix(in_srgb,var(--color-primary)_35%,transparent)] relative z-10 bg-clip-content">
+          <div className="bg-background relative z-10 bg-clip-content pb-(--footer-height) [box-shadow:0_40px_80px_-20px_color-mix(in_srgb,var(--color-primary)_35%,transparent)]">
             {children}
           </div>
           <Footer />
