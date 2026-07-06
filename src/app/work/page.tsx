@@ -2,8 +2,25 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { SITE_URL } from "@/lib/constants";
+import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
+
+const description =
+  "Jay Pancholi's work history and professional experience in full-stack web development.";
+
 export const metadata: Metadata = {
   title: "Work",
+  description,
+  alternates: { canonical: `${SITE_URL}${ROUTE_MANAGER.work}` },
+  openGraph: {
+    url: `${SITE_URL}${ROUTE_MANAGER.work}`,
+    title: "Work | Jay Pancholi",
+    description,
+  },
+  twitter: {
+    title: "Work | Jay Pancholi",
+    description,
+  },
 };
 
 export default function WorkPage(): ReactNode {

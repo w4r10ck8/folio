@@ -9,7 +9,14 @@ import { CustomCursor } from "@/components/cursor";
 import { Dock, type DockItem } from "@/components/dock";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
-import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
+import {
+  SITE_AUTHOR,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_TWITTER_HANDLE,
+  SITE_URL,
+} from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
 import "./globals.css";
@@ -46,11 +53,40 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_NAME,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
+  creator: SITE_AUTHOR,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_AU",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    creator: SITE_TWITTER_HANDLE,
+  },
 };
 
 interface RootLayoutProps {

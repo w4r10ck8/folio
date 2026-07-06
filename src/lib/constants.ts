@@ -2,10 +2,23 @@
 // App-wide named constants. No magic numbers or strings elsewhere.
 
 // ── Site metadata ─────────────────────────────────────────────────────────
-export const SITE_NAME = "Folio";
+export const SITE_NAME = "Jay Pancholi";
 export const SITE_DESCRIPTION =
-  "A production-ready Next.js starter with Tailwind v4 and shadcn/ui.";
+  "Full-stack developer based in Melbourne. I build fast, accessible web products with TypeScript, React, and Next.js.";
 export const SITE_URL = "https://muggleborn.dev";
+export const SITE_AUTHOR = "Jay Pancholi";
+export const SITE_TWITTER_HANDLE = "@jaypancholi94";
+export const SITE_KEYWORDS = [
+  "Jay Pancholi",
+  "full-stack developer",
+  "frontend developer",
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Melbourne",
+  "web developer",
+  "portfolio",
+];
 
 // ── Pagination ────────────────────────────────────────────────────────────
 export const DEFAULT_PAGE_SIZE = 20;
