@@ -11,7 +11,7 @@ const SOCIAL_LINKS = [
 
 export function Footer(): ReactNode {
   return (
-    <footer className="border-border/50 bg-background fixed right-0 bottom-0 left-0 z-0 flex h-(--footer-height) w-full items-center border-t">
+    <footer className="border-border/50 bg-footer-bg fixed right-0 bottom-0 left-0 z-0 flex h-(--footer-height) w-full items-center border-t">
       <div className="container mx-auto flex w-full flex-col gap-4 px-6 md:flex-row md:items-center md:justify-between md:gap-0">
         {/* Left — brand + tagline */}
         <div>
@@ -29,7 +29,7 @@ export function Footer(): ReactNode {
         </div>
 
         {/* Right — social links */}
-        <nav aria-label="Social links" className="flex gap-8">
+        <nav aria-label="Social links" className="flex flex-col gap-2">
           {SOCIAL_LINKS.map(({ label, index, href, isMailto }) => (
             <a
               key={label}

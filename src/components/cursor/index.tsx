@@ -306,7 +306,7 @@ export function CustomCursor() {
     // Single SVG overlay — one <path> that morphs between arrow and rounded rect.
     // No React state drives the path; all updates are imperative via pathRef.
     <svg
-      className="pointer-events-none fixed inset-0 z-[9999] h-screen w-screen"
+      className="pointer-events-none fixed inset-0 z-9999 h-screen w-screen"
       style={{ opacity: visible ? 1 : 0, transition: "opacity 0.15s ease" }}
     >
       <defs>
