@@ -29,7 +29,7 @@ export function WorkedWith() {
           </div>
 
           {/* Company logos */}
-          <div className="mb-12 grid grid-cols-3 items-center justify-items-center gap-x-8 gap-y-10 md:grid-cols-5">
+          <div className="mb-12 grid grid-cols-2 items-center justify-items-center gap-x-8 gap-y-10 md:grid-cols-4">
             {COMPANIES.map((company, i) => (
               <motion.a
                 key={company.name}
@@ -51,7 +51,7 @@ export function WorkedWith() {
                       alt={company.name}
                       width={160}
                       height={60}
-                      style={{ width: "auto", height: "28px" }}
+                      style={{ width: "auto", height: "38px" }}
                       className="object-contain"
                     />
                   </span>
@@ -61,7 +61,7 @@ export function WorkedWith() {
                     alt={company.name}
                     width={160}
                     height={60}
-                    style={{ width: "auto", height: "36px" }}
+                    style={{ width: "auto", height: "48px" }}
                     className="object-contain [filter:brightness(0)_invert(1)]"
                   />
                 )}
