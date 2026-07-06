@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 
 import { CustomCursor } from "@/components/cursor";
 import { Dock, type DockItem } from "@/components/dock";
+import { Toaster } from "@/components/ui/sonner";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: RootLayoutProps): ReactNode {
           {children}
           <Dock items={DOCK_ITEMS} themeToggle />
           <CustomCursor />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

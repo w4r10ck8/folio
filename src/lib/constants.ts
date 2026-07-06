@@ -17,3 +17,6 @@ export const TOAST_DURATION_MS = 4000;
 
 // ── Retry ─────────────────────────────────────────────────────────────────
 export const MAX_RETRY_COUNT = 3;
+
+// ── Discord (contact form notifications) ─────────────────────────────────
+export const DISCORD_EMBED_COLOR = 0x8b5cf6; // accent used for the contact form embed
