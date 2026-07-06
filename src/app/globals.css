@@ -41,6 +41,7 @@
 
   --dot-color: oklch(0.4741 0.0814 209.79/0.6);
   --matrix-green: oklch(50.802% 0.17285 142.511);
+  --footer-height: 220px;
 
   --shadow-2xs: 0 1px 3px 0px oklch(0 0 0 / 0.05);
   --shadow-xs: 0 1px 3px 0px oklch(0 0 0 / 0.05);
@@ -173,6 +174,8 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+  main {
     background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
     background-size: 20px 20px;
   }

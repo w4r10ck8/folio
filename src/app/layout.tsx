@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 
 import { CustomCursor } from "@/components/cursor";
 import { Dock, type DockItem } from "@/components/dock";
+import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
@@ -70,7 +71,10 @@ export default function RootLayout({ children }: RootLayoutProps): ReactNode {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="bg-background relative z-10 bg-clip-content pb-[var(--footer-height)]">
+            {children}
+          </div>
+          <Footer />
           <Dock items={DOCK_ITEMS} themeToggle />
           <CustomCursor />
           <Toaster />
