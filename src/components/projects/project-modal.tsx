@@ -5,9 +5,17 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
+import ReactMarkdown from "react-markdown";
 import { ExternalLink, Github, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { StatusBadge } from "@/components/projects/project-card";
 import type { Project } from "@/lib/constants/projects";
 
@@ -27,6 +35,12 @@ interface ProjectModalProps {
 
 export function ProjectModal({ project, onClose }: ProjectModalProps): ReactNode {
   const initials = getInitials(project.title);
+
+  // Thumbnail first, then any screenshots that aren't a duplicate of the thumbnail
+  const images = [
+    ...(project.thumbnail ? [project.thumbnail] : []),
+    ...project.screenshots.filter((s) => s !== project.thumbnail),
+  ];
 
   // Lock body scroll — compensate for scrollbar width to prevent layout shift
   useEffect(() => {
@@ -54,7 +68,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps): ReactNode
     <>
       {/* Backdrop */}
       <motion.div
-        className="fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 z-90 bg-black/60 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -65,13 +79,73 @@ export function ProjectModal({ project, onClose }: ProjectModalProps): ReactNode
       {/* Full-screen modal: stacked on mobile, two-column on desktop */}
       <motion.div
         layoutId={`project-${project.title}`}
-        className="bg-card md:border-border fixed inset-0 z-[100] flex flex-col overflow-hidden md:inset-4 md:flex-row md:rounded-2xl md:border md:shadow-2xl"
+        className="bg-background fixed inset-0 z-100 flex flex-col overflow-hidden md:flex-row"
         transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
       >
-        {/* Image panel — aspect-video on mobile, fills height on desktop */}
-        <div className="bg-muted relative aspect-video w-full shrink-0 overflow-hidden md:aspect-auto md:w-[45%]">
-          {project.thumbnail ? (
-            <Image src={project.thumbnail} alt={project.title} fill className="object-cover" />
+        {/* Close button — overlays everything, always reachable */}
+        <button
+          onClick={onClose}
+          className="bg-background/80 hover:bg-background absolute top-3 right-3 z-10 rounded-lg p-1.5 backdrop-blur-sm transition-colors"
+          aria-label="Close"
+        >
+          <X className="size-4" />
+        </button>
+
+        {/* Mobile: horizontal carousel */}
+        <div className="bg-muted w-full shrink-0 md:hidden">
+          {images.length > 0 ? (
+            <Carousel className="w-full">
+              <CarouselContent className="-ml-0">
+                {images.map((src, i) => (
+                  <CarouselItem key={`${i}-${src}`} className="pl-0">
+                    <div className="relative aspect-video w-full">
+                      <Image
+                        src={src}
+                        alt={`${project.title} screenshot ${i + 1}`}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              {images.length > 1 && (
+                <>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </>
+              )}
+            </Carousel>
+          ) : (
+            <div className="flex h-48 items-center justify-center">
+              <span
+                className="font-heading text-foreground/10 leading-none font-bold select-none"
+                style={{ fontSize: "clamp(4rem, 12vw, 9rem)" }}
+              >
+                {initials}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Desktop: vertical stacked scroll */}
+        <div className="bg-muted hidden w-[45%] overflow-y-auto md:block">
+          {images.length > 0 ? (
+            <div className="flex flex-col">
+              {images.map((src, i) => (
+                <div
+                  key={`${i}-${src}`}
+                  className="border-border/40 relative aspect-video w-full shrink-0 border-b last:border-b-0"
+                >
+                  <Image
+                    src={src}
+                    alt={`${project.title} screenshot ${i + 1}`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="flex h-full items-center justify-center">
               <span
@@ -82,13 +156,6 @@ export function ProjectModal({ project, onClose }: ProjectModalProps): ReactNode
               </span>
             </div>
           )}
-          <button
-            onClick={onClose}
-            className="bg-background/80 hover:bg-background absolute top-3 right-3 rounded-lg p-1.5 backdrop-blur-sm transition-colors"
-            aria-label="Close"
-          >
-            <X className="size-4" />
-          </button>
         </div>
 
         {/* Scrollable content panel */}
@@ -103,7 +170,9 @@ export function ProjectModal({ project, onClose }: ProjectModalProps): ReactNode
             <p className="text-muted-foreground mt-1 text-sm">{project.subtitle}</p>
           </div>
 
-          <p className="text-foreground/80 text-sm leading-relaxed">{project.description}</p>
+          <div className="prose prose-sm dark:prose-invert prose-p:text-foreground/80 prose-p:leading-relaxed max-w-none">
+            <ReactMarkdown>{project.description}</ReactMarkdown>
+          </div>
 
           <div className="flex flex-wrap gap-1.5">
             {project.tags.map((tag) => (
@@ -132,7 +201,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps): ReactNode
                 </Button>
               )}
               {project.preview && (
-                <Button asChild size="sm">
+                <Button asChild size="sm" variant="outline">
                   <a
                     href={project.preview}
                     target="_blank"

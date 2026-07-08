@@ -80,7 +80,7 @@ export function CardInner({
       {/* Image — clickable, scales on hover */}
       <div className="group cursor-pointer p-3" onClick={onSelect}>
         <motion.div
-          className="bg-muted relative aspect-video w-full overflow-hidden rounded-lg"
+          className="relative aspect-video w-full overflow-hidden rounded-lg"
           data-cursor-expand
           whileTap={{ scale: 1.03 }}
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -90,10 +90,10 @@ export function CardInner({
               src={project.thumbnail}
               alt={project.title}
               fill
-              className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+              className="object-contain transition-transform duration-500 ease-out group-hover:scale-110"
             />
           ) : (
-            <div className="flex h-full items-center justify-center">
+            <div className="bg-muted flex h-full items-center justify-center">
               <span
                 className="font-heading text-foreground/10 leading-none font-bold select-none"
                 style={{ fontSize: "clamp(3rem, 10vw, 7rem)" }}

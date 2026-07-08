@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-import { BriefcaseBusiness, CircleUser, Earth, Github, House, Linkedin, Mail } from "lucide-react";
+import { BriefcaseBusiness, CircleUser, House } from "lucide-react";
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, JetBrains_Mono, Manrope } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -25,16 +25,8 @@ const DOCK_ITEMS: Array<DockItem> = [
   { label: "Home", href: ROUTE_MANAGER.home, icon: <House size={24} /> },
   { label: "Projects", href: ROUTE_MANAGER.projects, icon: <BriefcaseBusiness size={24} /> },
   { label: "About", href: ROUTE_MANAGER.about, icon: <CircleUser size={24} /> },
+  { label: "Services", href: "#", icon: <BriefcaseBusiness size={24} /> },
   { type: "separator" },
-  {
-    label: "Social",
-    icon: <Earth size={24} />,
-    children: [
-      { label: "Email", href: ROUTE_MANAGER.external.email, icon: <Mail size={24} /> },
-      { label: "LinkedIn", href: ROUTE_MANAGER.external.linkedin, icon: <Linkedin size={24} /> },
-      { label: "GitHub", href: ROUTE_MANAGER.external.github, icon: <Github size={24} /> },
-    ],
-  },
 ];
 
 const manrope = Manrope({
