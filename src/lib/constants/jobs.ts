@@ -1,6 +1,7 @@
 export interface Job {
   company: string;
   role: string;
+  location?: string;
   duration: string;
   highlights: Array<string>;
 }

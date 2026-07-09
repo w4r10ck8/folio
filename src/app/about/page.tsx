@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { SmartCV } from "@/components/about";
 import { SITE_URL } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
@@ -25,9 +26,8 @@ export const metadata: Metadata = {
 
 export default function AboutPage(): ReactNode {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-foreground text-4xl font-bold tracking-tight">About</h1>
-      <p className="text-muted-foreground">Coming soon.</p>
+    <main>
+      <SmartCV />
     </main>
   );
 }
