@@ -33,6 +33,7 @@ export interface AboutEducation {
   institution: string;
   degree: string;
   duration: string;
+  location?: string;
   major?: string;
   description?: string;
 }
@@ -142,6 +143,7 @@ export const ABOUT_EDUCATION: Array<AboutEducation> = [
     institution: "Swinburne University of Technology",
     degree: "Master of Information Technology",
     duration: "2017 — 2019",
+    location: "Melbourne, Australia",
     major: "Major in Software Engineering",
     description:
       "High Distinction average with a focus on Distributed Systems and Human-Computer Interaction.",
@@ -150,6 +152,7 @@ export const ABOUT_EDUCATION: Array<AboutEducation> = [
     institution: "CHARUSAT University",
     degree: "Bachelor of Information Technology",
     duration: "2012 — 2016",
+    location: "Gujarat, India",
     description: "Foundation in Computer Science, algorithms, and software development.",
   },
 ];

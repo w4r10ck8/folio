@@ -16,7 +16,7 @@ export function CvExperience(): ReactNode {
             {/* Header */}
             <div className="flex items-start justify-between gap-4">
               <div className="flex flex-col gap-0.5">
-                <h3 className="text-foreground font-semibold">{job.role}</h3>
+                <h3 className="text-foreground text-xl font-semibold">{job.role}</h3>
                 <div className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm">
                   {job.website ? (
                     <a

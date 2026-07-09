@@ -2,6 +2,7 @@
 import type { ReactNode } from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { ContactCard } from "@/components/idea-brewing";
 import { CvInterests } from "./cv-interests";
 import { CvSidebar } from "./cv-sidebar";
 import { CvTimelineWrapper } from "./cv-timeline-wrapper";
@@ -55,6 +56,7 @@ export function SmartCV(): ReactNode {
 
         <CvTimelineWrapper />
         <CvInterests />
+        <ContactCard />
       </div>
     </div>
   );

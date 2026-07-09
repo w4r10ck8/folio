@@ -1,5 +1,6 @@
 // src/components/about/cv-interests.tsx
-import { Gamepad2, Mountain, Terminal, Waves } from "lucide-react";
+import { maskSnorkel } from "@lucide/lab";
+import { Gamepad2, Icon, Mountain, Terminal } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +14,7 @@ interface Interest {
 }
 
 const INTERESTS: Array<Interest> = [
-  { label: "PADI Scuba", icon: <Waves size={28} /> },
+  { label: "PADI Scuba", icon: <Icon iconNode={maskSnorkel} size={28} /> },
   { label: "Hiking", icon: <Mountain size={28} /> },
   { label: "Gaming", icon: <Gamepad2 size={28} /> },
   {
