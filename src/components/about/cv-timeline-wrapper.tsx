@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { Fragment, useLayoutEffect, useRef, useState } from "react";
+import { animate, motion, useMotionValue, useScroll, useTransform } from "motion/react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 import { ABOUT_EDUCATION, ABOUT_EXPERIENCE } from "@/lib/constants/about";
@@ -35,10 +35,36 @@ export function CvTimelineWrapper(): ReactNode {
   // eslint-disable-next-line react-hooks/refs
   progressRangeRef.current = progressRange;
 
-  const displayProgress = useTransform(scrollYProgress, (v) => {
+  const rawProgress = useTransform(scrollYProgress, (v) => {
     const [lo, hi] = progressRangeRef.current;
     return lo + v * (hi - lo);
   });
+
+  const displayProgress = useMotionValue(0);
+
+  useEffect(() => {
+    if (!pathD) return;
+    let controls = animate(displayProgress, rawProgress.get(), {
+      duration: 1,
+      ease: "easeOut",
+    });
+    let lastChangeAt = -Infinity;
+    const unsub = rawProgress.on("change", (v) => {
+      const now = performance.now();
+      const sinceLast = now - lastChangeAt;
+      lastChangeAt = now;
+      controls.stop();
+      if (sinceLast < 100) {
+        displayProgress.set(v);
+      } else {
+        controls = animate(displayProgress, v, { duration: 0.3, ease: "easeOut" });
+      }
+    });
+    return () => {
+      controls.stop();
+      unsub();
+    };
+  }, [pathD, rawProgress, displayProgress]);
 
   useLayoutEffect(() => {
     function buildPath() {

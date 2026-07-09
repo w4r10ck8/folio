@@ -9,7 +9,7 @@ import { CONTACT_CARDS, type ContactCardEntry } from "./constants";
 
 const ctaOverlay = (
   <div className="flex h-full w-full flex-col items-center justify-end pb-10 md:pb-14">
-    <div className="from-primary/0 to-primary/80 flex w-full flex-wrap justify-center gap-4 bg-gradient-to-b px-10 pt-12">
+    <div className="from-primary/0 to-primary/80 flex w-full flex-wrap justify-center gap-4 bg-linear-to-b px-10 pt-12">
       <Button
         asChild
         size="lg"
