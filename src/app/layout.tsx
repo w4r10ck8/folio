@@ -10,6 +10,7 @@ import { DevtoolsGate } from "@/components/devtools-guard";
 import { Dock, type DockItem } from "@/components/dock";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import {
   SITE_AUTHOR,
   SITE_DESCRIPTION,
@@ -100,15 +101,17 @@ export default function RootLayout({ children }: RootLayoutProps): ReactNode {
           enableSystem
           disableTransitionOnChange
         >
-          <DevtoolsGate>
-            <div className="bg-background relative z-10 mb-(--footer-height) bg-clip-content">
-              {children}
-            </div>
-            <Footer />
-            <Dock items={DOCK_ITEMS} themeToggle />
-            <CustomCursor />
-            <Toaster />
-          </DevtoolsGate>
+          <TooltipProvider>
+            <DevtoolsGate>
+              <div className="bg-background relative z-10 mb-(--footer-height) bg-clip-content">
+                {children}
+              </div>
+              <Footer />
+              <Dock items={DOCK_ITEMS} themeToggle />
+              <CustomCursor />
+              <Toaster />
+            </DevtoolsGate>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
