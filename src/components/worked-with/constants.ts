@@ -46,7 +46,6 @@ export const COMPANIES: Array<Company> = [
     name: "Swinburne University",
     logo: "/company/swinburne.svg",
     url: "https://swinburne.edu.au",
-    noFilter: true,
   },
 ];
 

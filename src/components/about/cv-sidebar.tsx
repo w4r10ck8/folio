@@ -4,6 +4,7 @@
 import { MapPin, Printer } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { ProfileCard } from "@/components/ui/profile-card";
 import { ABOUT_SKILLS } from "@/lib/constants/about";
 import { cn } from "@/lib/utils";
 import { Card } from "../ui/card";
@@ -12,23 +13,26 @@ export function CvSidebar() {
   return (
     <aside className="flex flex-col gap-6">
       <Card>
-        {/* Avatar placeholder */}
-        <div className="border-border bg-muted mx-auto flex aspect-square w-full max-w-60 items-center justify-center overflow-hidden rounded-2xl border md:mx-0">
-          <span className="font-heading text-muted-foreground text-6xl font-bold select-none">
-            JP
-          </span>
-        </div>
+        <ProfileCard
+          avatarUrl="/avatar.jpg"
+          name="Jay Pancholi"
+          title="Software Engineer"
+          handle="javicodes"
+          status="Online"
+          contactText="Contact Me"
+          showUserInfo={false}
+          enableTilt={true}
+          enableMobileTilt={true}
+          behindGlowColor="rgba(125, 190, 255, 0.67)"
+          iconUrl="/company/fwc.svg"
+          behindGlowEnabled
+          innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+        />
 
-        {/* Identity */}
-        <div className="flex flex-col gap-1">
-          <h1 className="font-heading text-foreground text-2xl leading-tight font-bold">
-            Jay <span className="text-primary">&ldquo;Muggleborn&rdquo;</span>
-          </h1>
-          <p className="text-muted-foreground text-sm font-medium">Senior Full-Stack Developer</p>
-          <div className="text-muted-foreground mt-1 flex items-center gap-1.5 text-sm">
-            <MapPin size={13} />
-            <span>Melbourne, Australia</span>
-          </div>
+        {/* Location */}
+        <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
+          <MapPin size={13} />
+          <span>Melbourne, Australia</span>
         </div>
 
         {/* Print button */}

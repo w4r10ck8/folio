@@ -7,17 +7,43 @@ import { ArrowUpRight } from "lucide-react";
 
 import { CURRENT_EMPLOYER, CURRENT_EMPLOYER_URL } from "@/lib/constants";
 import { HyperText } from "@/components/ui/hyper-text";
-import { TypingAnimation } from "@/components/ui/typing-animation";
+import { TerminalCommand } from "@/components/ui/terminal-command";
 
 const ROLES = [
   "Full Stack Developer",
   "Computer Scientist",
-  "Web Wizard",
+  "Software Engineer",
   "TypeScript Alchemist",
+  "React Specialist",
+  "Next.js Architect",
+  "JavaScript Craftsman",
+  "Accessibility Advocate",
+  "DX Enthusiast",
+  "CSS Wizard",
   "Tailwind Sorcerer",
+  "Pixel Perfectionist",
+  "Animation Magician",
+  "Git Archaeologist",
+  "CI/CD Tinkerer",
+  "Automation Addict",
+  "Clean Code Believer",
+  "Problem Solver",
+  "Architecture Enthusiast",
+  "Tech Explorer",
+  "Lifelong Learner",
+  "Open Source Admirer",
+  "CLI Power User",
+  "Terminal Dweller",
   "Vim Enthusiast",
+  "Keyboard Aficionado",
+  "Coffee-Powered Developer",
+  "Rubber Duck Negotiator",
   "Caffeine-Fueled Coder",
+  "Merge Conflict Survivor",
   "Prolific Emoji Conjurer",
+  "Digital Craftsman",
+  "Code Artisan",
+  "Build Once Improve Forever",
 ];
 
 export function HeroBanner() {
@@ -44,20 +70,7 @@ export function HeroBanner() {
         {/* Left-aligned content within centered padded container */}
         <div className="f relative z-10 container flex-col items-start gap-3 px-6">
           {/* whoami with block cursor */}
-          <div className="flex items-center gap-1.5" style={{ color: "var(--matrix-green)" }}>
-            <span className="font-mono text-base md:text-lg">$</span>
-            <TypingAnimation
-              className="md:text-x md:text-x track font-mono text-base"
-              cursorStyle="block"
-              showCursor
-              blinkCursor
-              loop
-              pauseDelay={9999999}
-              startOnView={false}
-            >
-              whoami
-            </TypingAnimation>
-          </div>
+          <TerminalCommand size="base">whoami</TerminalCommand>
 
           {/* Jay Pancholi */}
           <h1
@@ -69,12 +82,12 @@ export function HeroBanner() {
           </h1>
 
           {/* I'm a <role> */}
-          <div className="flex items-center gap-6">
+          <div className="mt-8 flex items-center gap-6">
             <a
               href={CURRENT_EMPLOYER_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group border-border bg-card hover:border-primary/50 relative mt-2 inline-flex flex-col gap-0.5 rounded border px-3 py-2 backdrop-blur-xs"
+              className="group border-border bg-card hover:border-primary/50 relative inline-flex flex-col gap-0.5 rounded border px-3 py-2 backdrop-blur-xs"
             >
               <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
                 Current Session

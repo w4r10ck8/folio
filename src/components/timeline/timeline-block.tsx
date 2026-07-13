@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
+import ReactMarkdown from "react-markdown";
 
+import { Badge } from "@/components/ui/badge";
 import { type Job } from "@/lib/constants/jobs";
 
 export type TimelineVariant =
@@ -86,7 +88,9 @@ export function TimelineBlock({ job, variant }: TimelineBlockProps) {
   const content =
     variant === "left-company-name" || variant === "right-company-name" ? (
       <div className={s.wrapper}>
-        <span className={s.badge}>{job.duration.toUpperCase()}</span>
+        <Badge variant="outline" className="mb-1 font-mono font-normal tracking-wider">
+          {job.duration.toUpperCase()}
+        </Badge>
         <h3 className={s.heading}>{job.company}</h3>
         <p className={s.role}>{job.role}</p>
       </div>
@@ -99,10 +103,27 @@ export function TimelineBlock({ job, variant }: TimelineBlockProps) {
               className="text-muted-foreground flex items-start gap-2.5 text-sm leading-relaxed"
             >
               <span className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
-              {highlight}
+              <span>
+                <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>
+                  {highlight}
+                </ReactMarkdown>
+              </span>
             </li>
           ))}
         </ul>
+        {job.tags && job.tags.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5 pt-3">
+            {job.tags.map((tag) => (
+              <Badge
+                key={tag}
+                variant="outline"
+                className="text-muted-foreground font-mono font-normal"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
     ) : null;
 

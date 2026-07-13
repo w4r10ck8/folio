@@ -39,7 +39,7 @@
 
   --radius: 0.5rem;
 
-  --dot-color: oklch(0.4741 0.0814 209.79/0.6);
+  --dot-color: oklch(47.408% 0.08145 209.826 / 0.268);
   --matrix-green: oklch(50.802% 0.17285 142.511);
   --footer-height: 220px;
   --footer-bg: #d1d5dc40;
@@ -88,7 +88,7 @@
   --chart-4: oklch(0.59 0.16 245);
   --chart-5: oklch(0.54 0.18 265);
 
-  --dot-color: #42a2af5e;
+  --dot-color: #42a2af22;
   --matrix-green: oklch(0.78 0.28 145);
   --footer-bg: #0f141d;
 

@@ -5,6 +5,7 @@ import { motion, useScroll } from "motion/react";
 
 import { JOBS } from "@/lib/constants/jobs";
 import { CORNER_R, DOT_SEAM_RATIO, MOBILE_DOT_INSET } from "./constants";
+import { TerminalCommand } from "@/components/ui/terminal-command";
 import { TimelineEvent } from "./timeline-event";
 
 function buildZigzagPath(
@@ -97,9 +98,7 @@ export function Timeline() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16"
         >
-          <p className="mb-2 font-mono text-sm" style={{ color: "var(--matrix-green)" }}>
-            $ ls career/
-          </p>
+          <TerminalCommand className="mb-2">ls career/</TerminalCommand>
           <h2
             className="font-heading text-foreground font-bold"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}

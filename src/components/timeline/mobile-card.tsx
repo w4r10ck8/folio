@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
+import ReactMarkdown from "react-markdown";
 
+import { Badge } from "@/components/ui/badge";
 import { type Job } from "@/lib/constants/jobs";
 import { cn } from "@/lib/utils";
 
@@ -23,9 +25,9 @@ export function MobileCard({ job, isRight }: { job: Job; isRight: boolean }) {
           <h3 className="font-heading text-foreground text-lg font-bold">{job.company}</h3>
           <p className="text-primary mt-0.5 font-mono text-sm">{job.role}</p>
         </div>
-        <span className="border-border text-muted-foreground mt-0.5 shrink-0 rounded-full border px-2.5 py-0.5 font-mono text-xs">
+        <Badge variant="outline" className="mt-0.5 shrink-0 font-mono font-normal">
           {job.duration}
-        </span>
+        </Badge>
       </div>
       <ul className="space-y-2">
         {job.highlights.map((highlight, i) => (
@@ -37,10 +39,27 @@ export function MobileCard({ job, isRight }: { job: Job; isRight: boolean }) {
             )}
           >
             <span className="bg-primary mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
-            {highlight}
+            <span>
+              <ReactMarkdown components={{ p: ({ children }) => <>{children}</> }}>
+                {highlight}
+              </ReactMarkdown>
+            </span>
           </li>
         ))}
       </ul>
+      {job.tags && job.tags.length > 0 && (
+        <div className={cn("mt-3 flex flex-wrap gap-1.5 pt-3", !isRight && "justify-end")}>
+          {job.tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="outline"
+              className="text-muted-foreground font-mono font-normal"
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

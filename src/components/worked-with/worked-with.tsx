@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 
+import { TerminalCommand } from "@/components/ui/terminal-command";
+
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { TiltedCard } from "@/components/ui/tilted-card";
 import { COMPANIES, STATS } from "./constants";
@@ -20,7 +22,9 @@ export function WorkedWith() {
         >
           {/* Header */}
           <div className="mb-12">
-            <p className="text-primary-foreground/50 mb-3 font-mono text-sm">$ ls ./clients</p>
+            <TerminalCommand variant="onPrimary" className="mb-3">
+              ls ./clients ls ./clients
+            </TerminalCommand>
             <h2
               className="font-heading text-primary-foreground font-bold"
               style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}

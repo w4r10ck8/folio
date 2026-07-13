@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 
 import { ContactForm } from "./contact-form";
+import { TerminalCommand } from "@/components/ui/terminal-command";
 
 export function Contact() {
   return (
@@ -15,9 +16,7 @@ export function Contact() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16"
         >
-          <p className="mb-2 font-mono text-sm" style={{ color: "var(--matrix-green)" }}>
-            $ mail --compose
-          </p>
+          <TerminalCommand className="mb-2">mail --compose</TerminalCommand>
           <h2
             className="font-heading text-foreground font-bold"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}

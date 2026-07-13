@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
 import { TiltedCard } from "@/components/ui/tilted-card";
+import { TerminalCommand } from "@/components/ui/terminal-command";
 import { CONTACT_CARDS, type ContactCardEntry } from "./constants";
 
 const ctaOverlay = (
@@ -60,7 +61,9 @@ export function ContactCard() {
             <div className="bg-primary flex w-full flex-col items-center rounded-3xl p-10 text-center md:p-14">
               {/* Header */}
               <div className="mb-8">
-                <p className="text-primary-foreground/50 mb-3 font-mono text-sm">$ brew --idea</p>
+                <TerminalCommand variant="onPrimary" className="mb-3">
+                  brew --idea brew --idea
+                </TerminalCommand>
                 <h2
                   className="font-heading text-primary-foreground font-bold"
                   style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }}
