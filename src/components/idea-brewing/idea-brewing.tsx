@@ -24,7 +24,7 @@ const ctaOverlay = (
         size="lg"
         className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
       >
-        <a href="#contact">Send an owl</a>
+        <a href="#contact">Let&ampos;s talk</a>
       </Button>
     </div>
   </div>

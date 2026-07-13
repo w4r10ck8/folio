@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight, Code2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import type { Project, ProjectStatus } from "@/lib/constants/projects";
+import type { HobbyProject, Project, ProjectStatus } from "@/lib/constants/projects";
 
 const STATUS_CONFIG: Record<ProjectStatus, { label: string; className: string }> = {
   live: { label: "Live", className: "bg-green-500/10 text-green-500 border-green-500/20" },
@@ -154,6 +154,70 @@ interface ProjectCardProps {
   index: number;
   isSelected: boolean;
   onSelect: (project: Project) => void;
+}
+
+interface HobbyProjectCardProps {
+  project: HobbyProject;
+  index: number;
+}
+
+export function HobbyProjectCard({ project, index }: HobbyProjectCardProps): ReactNode {
+  const Icon = project.icon;
+
+  return (
+    <motion.div
+      className="bg-card border-border overflow-hidden rounded-xl border backdrop-blur-sm"
+      initial={{ y: 24, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1],
+        delay: 0.65 + index * 0.08,
+      }}
+    >
+      {/* Icon thumbnail */}
+      <div className="bg-muted relative flex aspect-video w-full items-center justify-center overflow-hidden p-3">
+        <div className="bg-card/60 flex items-center justify-center rounded-2xl p-6">
+          <Icon className="text-muted-foreground size-36 stroke-[1.25]" />
+        </div>
+      </div>
+
+      {/* Bottom row */}
+      <div className="flex items-start justify-between gap-3 px-4 py-4">
+        <div className="flex min-w-0 flex-col gap-1">
+          <h3 className="font-heading text-foreground truncate text-lg leading-tight font-bold">
+            {project.title}
+          </h3>
+          <p className="text-muted-foreground truncate text-sm">{project.subtitle}</p>
+        </div>
+
+        <div className="flex shrink-0 gap-1.5">
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-muted text-muted-foreground hover:bg-accent hover:text-foreground rounded-xl p-2.5 transition-colors"
+              aria-label="View source code"
+            >
+              <Code2 className="size-4" />
+            </a>
+          )}
+          {project.preview && (
+            <a
+              href={project.preview}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-muted text-muted-foreground hover:bg-accent hover:text-foreground rounded-xl p-2.5 transition-colors"
+              aria-label="View live preview"
+            >
+              <ArrowUpRight className="size-4" />
+            </a>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 export function ProjectCard({ project, index, isSelected, onSelect }: ProjectCardProps): ReactNode {

@@ -20,6 +20,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "devtools-detector": "^2.0.25",
     "embla-carousel-react": "^8.6.0",
     "flubber": "^0.4.2",
     "framer-motion": "^12.42.2",

@@ -5,9 +5,9 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { AnimatePresence } from "motion/react";
 
-import { PROJECTS } from "@/lib/constants/projects";
+import { HOBBY_PROJECTS, PROJECTS } from "@/lib/constants/projects";
 import type { Project } from "@/lib/constants/projects";
-import { ProjectCard } from "@/components/projects/project-card";
+import { HobbyProjectCard, ProjectCard } from "@/components/projects/project-card";
 import { ProjectModal } from "@/components/projects/project-modal";
 import { ProjectFilters } from "@/components/projects/project-filters";
 import type { StatusFilter } from "@/components/projects/project-filters";
@@ -42,6 +42,21 @@ export function Projects(): ReactNode {
             No projects match the current filters.
           </p>
         )}
+      </div>
+
+      <div className="mt-16 flex flex-col gap-8">
+        <div>
+          <h2 className="font-heading text-foreground text-2xl font-bold">Hobby Builds</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Practice projects, take-home challenges, and things built just to learn.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {HOBBY_PROJECTS.map((project, index) => (
+            <HobbyProjectCard key={project.title} project={project} index={index} />
+          ))}
+        </div>
       </div>
 
       <AnimatePresence>

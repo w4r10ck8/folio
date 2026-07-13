@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 
 import { CustomCursor } from "@/components/cursor";
+import { DevtoolsGate } from "@/components/devtools-guard";
 import { Dock, type DockItem } from "@/components/dock";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -99,13 +100,15 @@ export default function RootLayout({ children }: RootLayoutProps): ReactNode {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="bg-background relative z-10 mb-(--footer-height) bg-clip-content">
-            {children}
-          </div>
-          <Footer />
-          <Dock items={DOCK_ITEMS} themeToggle />
-          <CustomCursor />
-          <Toaster />
+          <DevtoolsGate>
+            <div className="bg-background relative z-10 mb-(--footer-height) bg-clip-content">
+              {children}
+            </div>
+            <Footer />
+            <Dock items={DOCK_ITEMS} themeToggle />
+            <CustomCursor />
+            <Toaster />
+          </DevtoolsGate>
         </ThemeProvider>
       </body>
     </html>

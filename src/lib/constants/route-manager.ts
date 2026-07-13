@@ -7,6 +7,7 @@ export const ROUTE_MANAGER = {
   about: "/about",
   work: "/work",
   services: "/services",
+  contact: "/contact",
 
   external: {
     spellbook: "https://spellbook.muggleborn.dev/",

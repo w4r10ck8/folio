@@ -34,7 +34,7 @@ export function WorkedWith() {
           </div>
 
           {/* Company logos */}
-          <div className="mb-12 grid grid-cols-2 items-center justify-items-center gap-x-8 gap-y-10 md:grid-cols-4">
+          <div className="mb-12 grid grid-cols-2 items-center justify-items-center gap-x-4 gap-y-6 md:grid-cols-4">
             {COMPANIES.map((company, i) => (
               <motion.a
                 key={company.name}
@@ -47,7 +47,7 @@ export function WorkedWith() {
                 whileTap={{ scale: 0.96 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: i * 0.05, ease: "easeOut" }}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center px-4 py-2"
               >
                 {company.noFilter ? (
                   <span className="flex items-center justify-center rounded-md bg-white/90 px-3 py-1.5">

@@ -1,5 +1,7 @@
 // src/lib/constants/projects.ts
 
+import type { LucideIcon } from "lucide-react";
+
 export type ProjectStatus = "live" | "archived" | "wip" | "closed-beta";
 
 export interface Project {
@@ -233,5 +235,60 @@ dark/light/system theme support, and a responsive split-layout UI.`,
     preview:
       "https://chromewebstore.google.com/detail/gebcmdddadighnadfnlmpdiggkgnnabh?utm_source=item-share-cb",
     featured: false,
+  },
+];
+
+export interface HobbyProject {
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: LucideIcon;
+  github: string | null;
+  preview: string | null;
+  tags: Array<string>;
+}
+
+import { Trophy, Bot, Server, LayoutGrid } from "lucide-react";
+
+export const HOBBY_PROJECTS: Array<HobbyProject> = [
+  {
+    title: "Nobel Prize Search",
+    subtitle: "Real-Time Fuzzy Search Over Nobel Prize Data",
+    description:
+      "A search app that updates results in real-time as you type, with quality-ranked output so the most relevant laureates surface first. Uses Fuse.js for fuzzy matching, useEffect-based debouncing to cut down API calls, and pagination to keep large result sets manageable. Queries are shareable via URL, and the UI is fully responsive with accessible components from shadcn/ui.",
+    icon: Trophy,
+    github: "https://github.com/jaypancholi94/nobel-prize-search",
+    preview: "https://nobel-prize-search.vercel.app/",
+    tags: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Fuse.js", "shadcn/ui"],
+  },
+  {
+    title: "Robot Simulation",
+    subtitle: "Toy Robot on a 5×5 Grid",
+    description:
+      "A web app for simulating a toy robot moving around a 5×5 grid. Built as a take-home challenge with intuitive move and rotate controls, edge detection to prevent the robot falling off, and a clean minimalistic design inspired by Bellroy.",
+    icon: Bot,
+    github: "https://github.com/jaypancholi94/robot-simulator",
+    preview: "https://robot-simulator-bellroy.vercel.app/",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Vercel"],
+  },
+  {
+    title: "Ticket Management System API",
+    subtitle: "REST API with JWT Auth — Learning Project",
+    description:
+      "Built early on to understand authentication and REST API mechanics. A Node.js/Express backend with Sequelize for database management, JWT for auth, and bcrypt for password hashing. Covers user creation, ticket creation, updating, and deletion.",
+    icon: Server,
+    github: "https://github.com/jaypancholi94/Ticket-Management-System-API",
+    preview: null,
+    tags: ["JavaScript", "Node.js", "Express", "Sequelize", "JWT", "bcrypt", "mysql2"],
+  },
+  {
+    title: "2048",
+    subtitle: "The Classic Sliding Puzzle, Rebuilt with React + Redux",
+    description:
+      "A replica of the 2048 game built to learn Redux state management. Core logic uses matrix transpose methods for tile merging, the UI is built with Material-UI, and the grid size is configurable from 2×2 up to 8×8.",
+    icon: LayoutGrid,
+    github: "https://github.com/jaypancholi94/2048",
+    preview: "https://2048-the-game.vercel.app/",
+    tags: ["React", "Redux", "Material-UI", "Vercel"],
   },
 ];

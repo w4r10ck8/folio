@@ -95,7 +95,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps): ReactNode
         <div className="bg-muted w-full shrink-0 md:hidden">
           {images.length > 0 ? (
             <Carousel className="w-full">
-              <CarouselContent className="-ml-0">
+              <CarouselContent className="ml-0">
                 {images.map((src, i) => (
                   <CarouselItem key={`${i}-${src}`} className="pl-0">
                     <div className="relative aspect-video w-full">

@@ -56,7 +56,6 @@ export default function HomePage(): ReactNode {
         <WorkedWith />
         <Timeline />
         <ContactCard />
-        <Contact />
       </main>
     </>
   );

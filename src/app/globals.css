@@ -184,10 +184,17 @@
   }
 }
 
-/* Hide OS cursor on pointer devices — unlayered so it beats preflight specificity */
+/* Hide OS cursor on pointer devices — unlayered so it beats preflight specificity.
+   Scoped out of .devtools-guard-active, since CustomCursor unmounts there and
+   the OS cursor is the only one left. */
 @media (pointer: fine) {
   * {
     cursor: none !important;
+  }
+
+  .devtools-guard-active,
+  .devtools-guard-active * {
+    cursor: auto !important;
   }
 }
 

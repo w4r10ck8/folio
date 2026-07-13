@@ -9,7 +9,7 @@ export interface Job {
 
 export const JOBS: Array<Job> = [
   {
-    company: "Exco Partners",
+    company: "Exco Partners | An NEC Company",
     role: "Full Stack Developer",
     duration: "2023 – Present",
     highlights: [
