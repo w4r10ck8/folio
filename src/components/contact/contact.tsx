@@ -107,7 +107,6 @@ export function Contact() {
               <Info size={14} />
               <AlertDescription>
                 Typically responding within 24 hours. For urgent matters, please reach out directly
-                directly l.
               </AlertDescription>
             </Alert>
           </motion.div>
