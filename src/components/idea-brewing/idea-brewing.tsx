@@ -2,29 +2,32 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import type { Route } from "next";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { TiltedCard } from "@/components/ui/tilted-card";
 import { TerminalCommand } from "@/components/ui/terminal-command";
+import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 import { CONTACT_CARDS, type ContactCardEntry } from "./constants";
 
 const ctaOverlay = (
   <div className="flex h-full w-full flex-col items-center justify-end pb-10 md:pb-14">
     <div className="from-primary/0 to-primary/80 flex w-full flex-wrap justify-center gap-4 bg-linear-to-b px-10 pt-12">
-      <Button
+      {/* <Button
         asChild
         size="lg"
         className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
       >
         <a href="#contact">Start a project</a>
-      </Button>
+      </Button> */}
       <Button
         asChild
         variant="outline"
         size="lg"
         className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
       >
-        <a href="#contact">Let&ampos;s talk</a>
+        <Link href={ROUTE_MANAGER.contact as Route}>Let&rsquo;s talk</Link>
       </Button>
     </div>
   </div>

@@ -4,6 +4,7 @@ import { ArrowUpRight, Github, Info, Instagram, Linkedin, Mail } from "lucide-re
 import { motion } from "motion/react";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { TerminalCommand } from "@/components/ui/terminal-command";
 
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
@@ -29,10 +30,10 @@ export function Contact() {
           className="mb-20 text-center"
         >
           <h1
-            className="font-heading text-foreground mb-4 font-bold [text-wrap:balance]"
+            className="font-heading text-foreground mb-4 font-bold text-balance"
             style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)" }}
           >
-            Let&rsquo;s work together.
+            Let&rsquo;s work <span className="text-primary">together.</span>
           </h1>
           <p className="text-muted-foreground -a mx-auto max-w-lg text-balance">
             Whether you have a specific project in mind or just want to chat about technical
@@ -99,6 +100,7 @@ export function Contact() {
             transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
             className="border-border/60 bg-background/60 flex flex-col rounded-2xl border p-6 backdrop-blur-sm sm:p-8"
           >
+            <TerminalCommand size="base">ping</TerminalCommand>
             <h2 className="font-heading text-foreground mb-6 text-xl font-semibold">
               Send a message
             </h2>
