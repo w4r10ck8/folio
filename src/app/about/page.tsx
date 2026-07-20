@@ -7,7 +7,7 @@ import { SITE_URL } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
 const description =
-  "Learn about Jay Pancholi — full-stack developer based in Melbourne, Australia. TypeScript, React, and Next.js specialist.";
+  "Learn about Jay Pancholi, a Melbourne-based full-stack developer building accessible, high-performance products with TypeScript, React, and Next.js for local and global teams.";
 
 export const metadata: Metadata = {
   title: "About",
@@ -17,10 +17,19 @@ export const metadata: Metadata = {
     url: `${SITE_URL}${ROUTE_MANAGER.about}`,
     title: "About | Jay Pancholi",
     description,
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "About Jay Pancholi",
+      },
+    ],
   },
   twitter: {
     title: "About | Jay Pancholi",
     description,
+    images: [`${SITE_URL}/opengraph-image`],
   },
 };
 

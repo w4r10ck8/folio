@@ -4,7 +4,7 @@
 // ── Site metadata ─────────────────────────────────────────────────────────
 export const SITE_NAME = "Jay Pancholi";
 export const SITE_DESCRIPTION =
-  "Full-stack developer based in Melbourne. I build fast, accessible web products with TypeScript, React, and Next.js.";
+  "Jay Pancholi | Developer. Full-stack developer in Melbourne building fast, accessible web products with TypeScript, React, and Next.js for local and global teams.";
 export const SITE_URL = "https://muggleborn.dev";
 export const SITE_AUTHOR = "Jay Pancholi";
 export const SITE_TWITTER_HANDLE = "@jaypancholi94";
@@ -12,12 +12,26 @@ export const SITE_KEYWORDS = [
   "Jay Pancholi",
   "full-stack developer",
   "frontend developer",
+  "backend developer",
   "React",
   "Next.js",
   "TypeScript",
   "Melbourne",
   "web developer",
   "portfolio",
+  "software engineer",
+  "full stack developer Melbourne",
+  "frontend developer Melbourne",
+  "web developer Australia",
+  "remote full stack developer",
+  "global product engineering",
+  "JavaScript developer",
+  "Node.js developer",
+  "responsive web development",
+  "accessible web development",
+  "performance focused web apps",
+  "SEO friendly websites",
+  "UI engineer",
 ];
 
 // ── Pagination ────────────────────────────────────────────────────────────

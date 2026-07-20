@@ -49,7 +49,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: SITE_NAME,
+    default: "Jay Pancholi | Developer",
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -71,15 +71,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_AU",
     url: SITE_URL,
-    siteName: SITE_NAME,
-    title: SITE_NAME,
+    siteName: "Jay Pancholi | Developer",
+    title: "Jay Pancholi | Developer",
     description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Jay Pancholi | Developer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_NAME,
+    title: "Jay Pancholi | Developer",
     description: SITE_DESCRIPTION,
     creator: SITE_TWITTER_HANDLE,
+    images: [`${SITE_URL}/opengraph-image`],
   },
 };
 

@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
 const description =
-  "Jay Pancholi's work history and professional experience in full-stack web development.";
+  "View Jay Pancholi's professional work experience across full-stack development, product engineering, and modern web delivery.";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -16,10 +16,19 @@ export const metadata: Metadata = {
     url: `${SITE_URL}${ROUTE_MANAGER.work}`,
     title: "Work | Jay Pancholi",
     description,
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Jay Pancholi Work",
+      },
+    ],
   },
   twitter: {
     title: "Work | Jay Pancholi",
     description,
+    images: [`${SITE_URL}/opengraph-image`],
   },
 };
 

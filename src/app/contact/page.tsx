@@ -7,7 +7,7 @@ import { SITE_URL } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
 const description =
-  "Get in touch with Jay Pancholi — open to new projects, collaborations, and conversations.";
+  "Contact Jay Pancholi for full-stack development projects, frontend consulting, collaborations, and remote opportunities.";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -17,10 +17,19 @@ export const metadata: Metadata = {
     url: `${SITE_URL}${ROUTE_MANAGER.contact}`,
     title: "Contact | Jay Pancholi",
     description,
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Contact Jay Pancholi",
+      },
+    ],
   },
   twitter: {
     title: "Contact | Jay Pancholi",
     description,
+    images: [`${SITE_URL}/opengraph-image`],
   },
 };
 

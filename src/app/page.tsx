@@ -11,21 +11,31 @@ import {
   CURRENT_EMPLOYER_URL,
   SITE_AUTHOR,
   SITE_DESCRIPTION,
-  SITE_NAME,
   SITE_URL,
 } from "@/lib/constants";
 import { ROUTE_MANAGER } from "@/lib/constants/route-manager";
 
 export const metadata: Metadata = {
+  title: "Jay Pancholi | Developer",
+  description: SITE_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}${ROUTE_MANAGER.home}` },
   openGraph: {
     url: `${SITE_URL}${ROUTE_MANAGER.home}`,
-    title: SITE_NAME,
+    title: "Jay Pancholi | Developer",
     description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Jay Pancholi | Developer",
+      },
+    ],
   },
   twitter: {
-    title: SITE_NAME,
+    title: "Jay Pancholi | Developer",
     description: SITE_DESCRIPTION,
+    images: [`${SITE_URL}/opengraph-image`],
   },
 };
 
