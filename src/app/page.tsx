@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import { Contact } from "@/components/contact";
 import { HeroBanner } from "@/components/hero-banner";
 import { ContactCard } from "@/components/idea-brewing";
 import { Timeline } from "@/components/timeline";

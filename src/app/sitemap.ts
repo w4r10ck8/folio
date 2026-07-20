@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${SITE_URL}${ROUTE_MANAGER.services}`,
+      url: `${SITE_URL}${ROUTE_MANAGER.contact}`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,

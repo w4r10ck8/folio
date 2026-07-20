@@ -26,19 +26,24 @@ export async function POST(request: Request): Promise<NextResponse<Result<{ sent
 
   const { name, email, message } = parsed.data;
 
+  const env = process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "unknown";
+  const envEmoji = env === "production" ? "🟢" : env === "preview" ? "🟡" : "🔵";
+
   const discordResponse = await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       embeds: [
         {
-          title: "New Contact Form Submission",
+          title: "📬 New Contact Message",
+          description: `>>> ${message}`,
           color: DISCORD_EMBED_COLOR,
           fields: [
-            { name: "Name", value: name, inline: true },
-            { name: "Email", value: email, inline: true },
-            { name: "Message", value: message },
+            { name: "👤 Name", value: name, inline: true },
+            { name: "📧 Email", value: email, inline: true },
+            { name: "🌍 Environment", value: `${envEmoji} \`${env}\``, inline: true },
           ],
+          footer: { text: "muggleborn.dev • contact form" },
           timestamp: new Date().toISOString(),
         },
       ],

@@ -6,13 +6,13 @@ export const ROUTE_MANAGER = {
   projects: "/projects",
   about: "/about",
   work: "/work",
-  services: "/services",
   contact: "/contact",
 
   external: {
     spellbook: "https://spellbook.muggleborn.dev/",
     email: "mailto:jaypancholi94@gmail.com",
     linkedin: "https://www.linkedin.com/in/jay-pancholi/",
-    github: "https://github.com/jaypancholi94",
+    github: "https://github.com/w4r10ck8",
+    instagram: "https://www.instagram.com/_jaypancholi_/",
   },
 };

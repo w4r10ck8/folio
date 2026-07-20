@@ -74,10 +74,7 @@ export function ContactForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="border-border/60 bg-background/60 space-y-6 rounded-2xl border p-6 backdrop-blur-sm sm:p-8"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
