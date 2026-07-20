@@ -1,0 +1,26 @@
+name: folio
+platforms:
+  claude:
+    enabled: true
+  copilot:
+    enabled: true
+  cursor:
+    enabled: true
+  codex:
+    enabled: true
+agents:
+  - developer
+  - quality-assurance
+  - blog-writer
+skills:
+  - qa-review
+  - typescript
+  - file-management
+  - azure-devops
+  - make-interfaces-feel-better
+  - testing
+  - next-best-practices
+  - form-builder
+  - form-extract
+  - spellbook-style
+  - git
